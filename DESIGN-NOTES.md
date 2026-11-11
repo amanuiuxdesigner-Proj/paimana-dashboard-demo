@@ -31,7 +31,7 @@ Page header: title · Flash Report month · data-as-of date · Export CSV
 Scope + filters: Under Implementation | Newly Added | Reported | Not Reported (with counts)
                  Agency · State/UT · Cost band · Revision status · active-filter chips · Reset
 Tabs:
- ├─ Overview: 6 KPIs → 2×2 chart pairs: Cost waterfall + India State map · Agency bars + Physical progress · Cost overrun + Time overrun
+ ├─ Overview: 6 KPIs → 2×2 chart pairs: Physical progress + Cost overview (stacked) · India State map + Agency bars · Time overrun + Cost overrun
  ├─ Performance Analytics (badge = flagged count): 3 metric groups → 3 early-warning scatter plots
  │    with Non-revised / Revised switch → flagged-projects table (search, filter, sort)
  │    Selecting a chart lists only the projects it flags (charts 1–2: lagging or lapsed; chart 3: misaligned),
@@ -40,24 +40,24 @@ Tabs:
  └─ Data Scrutiny (badge = outlier count): rule summary → outlier table with failing cells highlighted
 Project page (full page, replaces the earlier side drawer): opens from any flagged-projects or data-scrutiny row,
   or any dot on the early-warning charts. Link: #project-<ID>. Back link and Esc return to the list at the same scroll position.
-  Sections follow "project dashboard.docx":
+  Sections follow "project dashboard.docx", with the progress timeline moved up under the tiles:
    1. Title, ID · agency · State, revision and reporting pills, flags
    2. Six headline tiles: Original cost · Revised cost · Expenditure (with change from last quarter) · Start date ·
       Original commissioning · Revised commissioning (with months of delay)
-   3. Physical progress and Financial progress donuts, with time elapsed, gap to schedule and balance to spend
-   4. Time overrun (TOR) and Cost overrun (COR), each with the reported causes
-   5. Project details: sector, implementing agency, location, implementation mode, brief description
-   6. Project timeline: start, schedule/cost revisions, original and revised commissioning, today
-   7. Project progress timeline: quarterly physical vs financial progress line chart. Both lines draw left to
+   3. Project progress timeline: quarterly physical vs financial progress line chart. Both lines draw left to
       right, one quarter after another (~1.8 s, linear) when the page opens; Replay re-runs it. Donuts sweep in.
       No animation when the viewer has reduced motion switched on.
+   4. Physical progress and Financial progress donuts, with time elapsed, gap to schedule and balance to spend
+   5. Time overrun (TOR) and Cost overrun (COR), each with the reported causes
+   6. Project details: sector, implementing agency, location, implementation mode, brief description
+   7. Project timeline: start, schedule/cost revisions, original and revised commissioning, today
   Sample-data note: the Flash Report fields used here are real model fields; quarterly history, TOR/COR causes,
   last-quarter change and implementation mode are derived sample values until the feed supplies them.
 ```
 
 Key changes from the current page:
 - Filters apply instantly. The Show Data button is removed and active filters show as removable chips.
-- A **cost waterfall** replaces the funnel: Original → Escalation → Revised → Expenditure → Balance.
+- **Two stacked bars** replace the funnel. Both bars total the latest revised cost: *Approved cost* = original cost + cost escalation; *Spending* = expenditure + balance to spend. Segments are labelled with amount and share; a key strip below repeats the figures. (This replaced an earlier waterfall with a separate Revised cost bar.)
 - **Agency donut → ranked horizontal bars**, with a Projects / Revised cost / Expenditure switch. Agencies beyond the top 8 are grouped as "Others".
 - **India State map (choropleth) plus ranked list.** The map is embedded in the page (about 46 KB, no external requests). Hovering a State shows its project count and original cost; tapping on a phone shows the same details, and a second tap filters. Selecting a State filters the page, and keyboard users can tab through States. Boundaries follow India's official map: Ladakh includes Gilgit-Baltistan and Aksai Chin, and Jammu & Kashmir is shown in full. Source: open data from github.com/udit-001/india-maps-data, merged from districts to States. *Before go-live, have the boundaries checked against the Survey of India outline.*
 - Every chart keeps its Chart/Table toggle. Tables use one format: `Original (**Revised**)`.
@@ -113,7 +113,7 @@ Issues found and fixed during the audit:
 - Reference-line labels overlapped dots. They were repositioned.
 - The issue column in the scrutiny table was cut off. It now sits next to the project name.
 - On phones the filters filled the first screen. They are now behind a Filters button.
-- The waterfall labels collided on phones. A compact `₹x.xxL` format is used on narrow charts.
+- Cost overview labels collided on phones. Narrow charts use shorter labels, and a segment too narrow for its label in the middle of a bar is left unlabelled (its figure stays in the key strip and tooltip).
 
 Accessibility:
 - Status is never shown by colour alone: dots also differ in shape, and legends and flags have text labels.

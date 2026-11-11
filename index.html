@@ -251,6 +251,16 @@ details.how code{display:block;background:var(--surface-2);border:1px solid var(
 .sechead p{margin:2px 0 0;color:var(--ink-3);font-size:13px;max-width:72ch}
 .sechead .t{flex:1;min-width:240px}
 
+/* cost overview key: doubles as legend and headline figures */
+.costkey{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 20px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.costkey .grp{display:flex;flex-direction:column;gap:8px;min-width:0}
+.costkey .gh{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.costkey .it{display:grid;grid-template-columns:12px minmax(0,1fr);gap:2px 8px;align-items:center}
+.costkey .sw{width:12px;height:12px;border-radius:3px}
+.costkey .lb{font-size:12.5px;color:var(--ink-2)}
+.costkey .vl{grid-column:2;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.costkey .vl small{font-size:12px;font-weight:600;color:var(--ink-3);margin-left:4px}
+@media (max-width:460px){.costkey{grid-template-columns:1fr}}
 /* selectable scatter cards */
 #scatters .card{cursor:pointer;transition:border-color .15s,box-shadow .15s}
 #scatters .card:hover{border-color:var(--line-2)}
@@ -283,6 +293,7 @@ td.bad{color:var(--crit-ink);font-weight:700;background:rgba(208,59,59,.07)}
 .pj-top .t{flex:1;min-width:260px}
 .backbtn{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font-weight:600;font-size:13px;cursor:pointer;padding:4px 0;margin-bottom:6px}
 .backbtn svg{width:16px;height:16px}
+.pj-title:focus{outline:none}
 .pj-title{font-size:22px;line-height:1.3;margin:2px 0 6px;font-weight:700;text-wrap:balance;max-width:80ch}
 .pj-meta{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;color:var(--ink-2);font-size:13px}
 .pj-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
@@ -525,16 +536,28 @@ footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:16px}
       <section id="view-overview" role="tabpanel" aria-labelledby="tab-overview" class="grid" style="gap:16px">
         <div class="grid g-kpi" id="kpis"></div>
 
-        <!-- Row 1: cost and geography -->
+        <!-- Row 1: progress and cost -->
         <div class="grid g-2">
           <article class="card">
-            <div class="card-h"><div class="t"><h2>Cost overview</h2><p>From sanctioned cost to the balance still to be spent (₹ crore)</p></div>
+            <div class="card-h"><div class="t"><h2>Physical progress</h2><p>Projects by % physical progress</p></div>
+              <div class="toggle" data-for="pp"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
+            <div class="card-b">
+              <div class="chartbox pair" data-chart="pp"><canvas id="cProgress" role="img" aria-label="Physical progress distribution"></canvas></div>
+              <div class="tablewrap" data-table="pp" hidden></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-h"><div class="t"><h2>Cost overview</h2><p>What the portfolio now costs, and how much of it has been spent (₹ crore)</p></div>
               <div class="toggle" data-for="wf"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
             <div class="card-b">
-              <div class="chartbox pair" data-chart="wf"><canvas id="cWaterfall" role="img" aria-label="Cost waterfall chart"></canvas></div>
+              <div data-chart="wf"><div class="chartbox" style="height:236px"><canvas id="cWaterfall" role="img" aria-label="Stacked bars: approved cost split into original cost and escalation; spending split into expenditure and balance to spend"></canvas></div><div class="costkey" id="costKey"></div></div>
               <div class="tablewrap" data-table="wf" hidden></div>
             </div>
           </article>
+        </div>
+
+        <!-- Row 2: geography and agencies -->
+        <div class="grid g-2">
           <article class="card">
             <div class="card-h"><div class="t"><h2>State-wise distribution</h2><p>Project count by State / UT. Hover for details, select to filter.</p></div>
               <div class="toggle" data-for="st"><button aria-pressed="true" data-v="chart">Map</button><button aria-pressed="false" data-v="table">Table</button></div></div>
@@ -543,10 +566,6 @@ footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:16px}
               <div class="tablewrap" data-table="st" hidden></div>
             </div>
           </article>
-        </div>
-
-        <!-- Row 2: agencies and progress -->
-        <div class="grid g-2">
           <article class="card">
             <div class="card-h"><div class="t"><h2>Agency-wise distribution</h2><p id="agSub">Top agencies by project count</p></div>
               <div class="toggle" data-for="ag"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
@@ -558,32 +577,24 @@ footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:16px}
               <div class="tablewrap" data-table="ag" hidden></div>
             </div>
           </article>
-          <article class="card">
-            <div class="card-h"><div class="t"><h2>Physical progress</h2><p>Projects by % physical progress</p></div>
-              <div class="toggle" data-for="pp"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
-            <div class="card-b">
-              <div class="chartbox pair" data-chart="pp"><canvas id="cProgress" role="img" aria-label="Physical progress distribution"></canvas></div>
-              <div class="tablewrap" data-table="pp" hidden></div>
-            </div>
-          </article>
         </div>
 
         <!-- Row 3: overruns -->
         <div class="grid g-2">
-          <article class="card">
-            <div class="card-h"><div class="t"><h2>Cost overrun</h2><p>Projects by % increase over original cost</p></div>
-              <div class="toggle" data-for="co"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
-            <div class="card-b">
-              <div class="chartbox pair" data-chart="co"><canvas id="cCost" role="img" aria-label="Cost overrun distribution"></canvas></div>
-              <div class="tablewrap" data-table="co" hidden></div>
-            </div>
-          </article>
           <article class="card">
             <div class="card-h"><div class="t"><h2>Time overrun</h2><p>Projects by schedule extension (years)</p></div>
               <div class="toggle" data-for="to"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
             <div class="card-b">
               <div class="chartbox pair" data-chart="to"><canvas id="cTime" role="img" aria-label="Time overrun distribution"></canvas></div>
               <div class="tablewrap" data-table="to" hidden></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-h"><div class="t"><h2>Cost overrun</h2><p>Projects by % increase over original cost</p></div>
+              <div class="toggle" data-for="co"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
+            <div class="card-b">
+              <div class="chartbox pair" data-chart="co"><canvas id="cCost" role="img" aria-label="Cost overrun distribution"></canvas></div>
+              <div class="tablewrap" data-table="co" hidden></div>
             </div>
           </article>
         </div>
@@ -891,23 +902,48 @@ function renderKPIs() {
   ].join('');
 }
 
+// Cost overview: two stacked bars with the same total (the latest approved cost).
+// Bar 1 shows where that cost comes from (original + escalation); bar 2 shows how much of it is spent (expenditure + balance).
+const inkOn = hex => { const h = hex.replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16); const [r, g, b] = [n >> 16 & 255, n >> 8 & 255, n & 255].map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * r + .7152 * g + .0722 * b > .36 ? '#0F1B33' : '#FFFFFF'; };
+const segLabels = { id: 'segLabels', afterDatasetsDraw(chart, _a, o) {
+  if (!o || !o.on) return; const { ctx, chartArea: area } = chart; ctx.save(); ctx.textBaseline = 'middle';
+  chart.data.datasets.forEach((ds, di) => { const meta = chart.getDatasetMeta(di); if (meta.hidden) return;
+    meta.data.forEach((el, j) => { const v = ds.data[j]; if (v == null || v <= 0) return;
+      const left = Math.min(el.base, el.x), right = Math.max(el.base, el.x), w = right - left, [t1, t2] = o.text(di, j, chart);
+      ctx.font = '700 12.5px "Noto Sans",sans-serif'; const w1 = ctx.measureText(t1).width; ctx.font = '600 11.5px "Noto Sans",sans-serif'; const w2 = ctx.measureText(t2).width;
+      if (w >= Math.max(w1, w2) + 20) {           // fits: label inside the segment
+        ctx.fillStyle = inkOn(ds.backgroundColor); ctx.textAlign = 'center'; const cx = left + w / 2;
+        ctx.font = '700 12.5px "Noto Sans",sans-serif'; ctx.fillText(t1, cx, el.y - 8); ctx.font = '600 11.5px "Noto Sans",sans-serif'; ctx.globalAlpha = .85; ctx.fillText(t2, cx, el.y + 9); ctx.globalAlpha = 1;
+      } else if (!chart.data.datasets.slice(di + 1).some((d, k) => d.data[j] != null && !chart.getDatasetMeta(di + 1 + k).hidden)) {  // too narrow and last in its bar: label past the bar end (a narrow middle segment stays unlabelled; the key strip below shows it)
+        ctx.fillStyle = cv('--ink'); ctx.textAlign = 'left'; const x = Math.min(right + 8, area.right - Math.max(w1, w2));
+        ctx.font = '700 12.5px "Noto Sans",sans-serif'; ctx.fillText(t1, x, el.y - 8); ctx.font = '600 11.5px "Noto Sans",sans-serif'; ctx.fillStyle = cv('--ink-3'); ctx.fillText(t2, x, el.y + 9);
+      } }); });
+  ctx.restore(); } };
+Chart.register(segLabels);
 function renderWaterfall() {
   const sum = f => CUR.reduce((s, p) => s + f(p), 0);
-  const orig = sum(p => p.origCost), rev = sum(p => p.latestCost), exp = sum(p => p.exp), esc_ = rev - orig, bal = rev - exp;
-  const labels = ['Original cost', 'Cost escalation', 'Revised cost', 'Expenditure', 'Balance to spend'];
-  const data = [[0, orig], [orig, rev], [0, rev], [rev - exp, rev], [0, Math.max(0, bal)]];
-  const colors = [cv('--s2'), cv('--serious'), cv('--s1'), cv('--teal'), cv('--neutral')];
-  const txt = [fmtCr(orig), '+' + fmtCr(esc_) + ` (${fmt1(esc_ / (orig || 1) * 100)}%)`, fmtCr(rev), '−' + fmtCr(exp) + ` (${fmt1(exp / (rev || 1) * 100)}%)`, fmtCr(bal) + ` (${fmt1(bal / (rev || 1) * 100)}%)`];
-  const o = baseOpts();
-  o.scales = { x: { grid: { display: false }, ticks: { color: cv('--ink-2'), font: { weight: '600' }, maxRotation: 0, autoSkip: false,
-      callback: (v, i) => labels[i].includes(' ') && document.getElementById('cWaterfall').parentElement.clientWidth < 760 ? labels[i].split(' ') : labels[i] } },
-    y: { beginAtZero: true, grace: '12%', grid: gridOpts(), border: { display: false }, ticks: { callback: v => (v / 1e5).toLocaleString('en-IN') + 'L cr' } } };
-  const short = [orig, esc_, rev, exp, bal].map((v, i) => (i === 1 ? '+' : i === 3 ? '−' : '') + '₹' + (v / 1e5).toFixed(2) + 'L');
-  const mid = [orig, esc_, rev, exp, bal].map((v, i) => (i === 1 ? '+' : i === 3 ? '−' : '') + fmtCr(v));  // half-width card: amount only
-  o.plugins.valueLabels = { on: true, text: (j, ch) => ch.width < 420 ? short[j] : ch.width < 760 ? mid[j] : txt[j] };
-  o.plugins.tooltip.callbacks = { label: c => txt[c.dataIndex] + ' crore' };
-  mkChart('cWaterfall', { type: 'bar', data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: 4, borderSkipped: false, maxBarThickness: 72 }] }, options: o });
-  tableInto('wf', ['Component', 'Amount (₹ cr)', 'Share'], labels.map((l, i) => [l, fmtInt([orig, esc_, rev, exp, bal][i]), ['—', fmt1(esc_ / (orig || 1) * 100) + '% of original', '100%', fmt1(exp / (rev || 1) * 100) + '% of revised', fmt1(bal / (rev || 1) * 100) + '% of revised'][i]]), [1]);
+  const orig = sum(p => p.origCost), rev = sum(p => p.latestCost), exp = sum(p => p.exp), esc_ = Math.max(0, rev - orig), bal = Math.max(0, rev - exp);
+  const pct = (v, of) => fmt1(v / (of || 1) * 100) + '%';
+  const C = { orig: cv('--s2'), esc: cv('--serious'), exp: cv('--teal'), bal: cv('--neutral') };
+  const SEG = [
+    ['Original cost', [orig, null], C.orig, fmtCr(orig) + ' cr', pct(orig, rev) + ' of revised'],
+    ['Cost escalation', [esc_, null], C.esc, '+' + fmtCr(esc_) + ' cr', '+' + pct(esc_, orig) + ' over original'],
+    ['Expenditure', [null, exp], C.exp, fmtCr(exp) + ' cr', pct(exp, rev) + ' spent'],
+    ['Balance to spend', [null, bal], C.bal, fmtCr(bal) + ' cr', pct(bal, rev) + ' remaining']];
+  const narrow = () => document.getElementById('cWaterfall').parentElement.clientWidth < 460;
+  const o = baseOpts(); o.indexAxis = 'y';
+  o.scales = { x: { stacked: true, beginAtZero: true, max: Math.ceil(rev * 1.3 / 1e5) * 1e5, grid: gridOpts(), border: { display: false }, ticks: { maxTicksLimit: 8, callback: v => (v / 1e5).toLocaleString('en-IN') + 'L cr' } },
+    y: { stacked: true, grid: { display: false }, border: { display: false }, ticks: { color: cv('--ink'), font: { weight: '700', size: 12.5 }, padding: 8,
+      callback: (v, i) => i === 0 ? ['Approved cost', fmtCr(rev) + ' cr'] : ['Spending', pct(exp, rev) + ' spent'] } } };
+  o.plugins.segLabels = { on: true, text: (di, j, ch) => narrow() || di === 1 ? [di === 1 && !narrow() ? SEG[di][3] : SEG[di][3].replace(/ cr$/, ''), SEG[di][4].split(' ')[0]] : [SEG[di][3], SEG[di][4]] };  // escalation sits outside the bar, so it gets the short note
+  o.plugins.tooltip.callbacks = { title: c => c[0].dataIndex === 0 ? `Approved cost · ${fmtCr(rev)} cr` : `Spending · ${fmtCr(rev)} cr`, label: c => `${SEG[c.datasetIndex][0]}: ${SEG[c.datasetIndex][3]} (${SEG[c.datasetIndex][4]})` };
+  const ds = SEG.map(([label, data, col], i) => ({ label, data, backgroundColor: col, borderColor: cv('--surface'), borderWidth: { right: 2 }, borderSkipped: false,
+    borderRadius: { topLeft: i % 2 ? 0 : 6, bottomLeft: i % 2 ? 0 : 6, topRight: i % 2 ? 6 : 0, bottomRight: i % 2 ? 6 : 0 }, barPercentage: .78, categoryPercentage: .82, maxBarThickness: 64 }));
+  mkChart('cWaterfall', { type: 'bar', data: { labels: ['Approved cost', 'Spending'], datasets: ds }, options: o });
+  const item = ([label, , col, val, note]) => `<div class="it"><span class="sw" style="background:${col}"></span><span class="lb">${label}</span><span class="vl">${val}<small>${note}</small></span></div>`;
+  $('#costKey').innerHTML = `<div class="grp"><div class="gh">Approved cost</div>${item(SEG[0])}${item(SEG[1])}</div><div class="grp"><div class="gh">Spending</div>${item(SEG[2])}${item(SEG[3])}</div>`;
+  tableInto('wf', ['Component', 'Amount (₹ cr)', 'Share'], [['Original cost', fmtInt(orig), pct(orig, rev) + ' of revised'], ['Cost escalation', fmtInt(esc_), '+' + pct(esc_, orig) + ' over original'],
+    ['Revised cost (total of both bars)', fmtInt(rev), '100%'], ['Expenditure', fmtInt(exp), pct(exp, rev) + ' of revised'], ['Balance to spend', fmtInt(bal), pct(bal, rev) + ' of revised']], [1]);
 }
 
 function renderBadges() {
@@ -1222,6 +1258,9 @@ function renderProject(p) {
       ${tile('t-navy', PJ_ICON.clock, 'Original comm. date', fmtDate(p.origEnd), '', qLabel(p.origEnd))}
       ${tile('t-red', PJ_ICON.clock, 'Revised comm. date', p.revEnd ? fmtDate(p.revEnd) : '—', '', p.schedRevised ? `${delayM} months after original` : 'Not revised')}
     </div>
+    <article class="card"><div class="card-h"><div class="t"><h2>Project progress timeline</h2><p>Cumulative physical and financial progress by quarter (%)</p></div>
+        <button class="btn" id="pjReplay" style="height:32px">Replay</button></div>
+      <div class="card-b"><div class="chartbox pj"><canvas id="pjLine" role="img" aria-label="Quarterly physical and financial progress line chart"></canvas></div></div></article>
     <div class="grid g-2">
       <article class="card"><div class="card-h"><div class="t"><h2>Physical progress</h2><p>Work completed against the time span elapsed</p></div></div>
         <div class="card-b"><div class="donutwrap"><div class="donutbox"><canvas id="pjDonutP" role="img" aria-label="Physical progress ${fmt1(p.phys)} percent"></canvas><div class="donut-c"><div><b class="num">${fmt1(Math.min(100, p.phys))}%</b><span>complete</span></div></div></div>
@@ -1241,10 +1280,7 @@ function renderProject(p) {
         <dt>Implementation mode</dt><dd>${m.mode}</dd>
         <dt>Brief project description</dt><dd><p class="pj-desc">${desc}</p></dd></dl></div></article>
     <article class="card"><div class="card-h"><div class="t"><h2>Project timeline</h2><p>Key milestones from start to commissioning. The blue bar shows time elapsed to this Flash Report.</p></div></div>
-      <div class="card-b">${tlHtml}</div></article>
-    <article class="card"><div class="card-h"><div class="t"><h2>Project progress timeline</h2><p>Cumulative physical and financial progress by quarter (%)</p></div>
-        <button class="btn" id="pjReplay" style="height:32px">Replay</button></div>
-      <div class="card-b"><div class="chartbox pj"><canvas id="pjLine" role="img" aria-label="Quarterly physical and financial progress line chart"></canvas></div></div></article>`;
+      <div class="card-b">${tlHtml}</div></article>`;
   drawProjectCharts(p, m);
   $('#pjBack').addEventListener('click', closeProject);
   $('#pjReplay').addEventListener('click', () => drawProjectLine(m));
