@@ -31,7 +31,7 @@ Page header: title · Flash Report month · data-as-of date · Export CSV
 Scope + filters: Under Implementation | Newly Added | Reported | Not Reported (with counts)
                  Agency · State/UT · Cost band · Revision status · active-filter chips · Reset
 Tabs:
- ├─ Overview: 6 KPIs → 2×2 chart pairs: Physical progress + Cost overview (stacked) · India State map + Agency bars · Time overrun + Cost overrun
+ ├─ Overview: 6 KPIs → 2×2 chart pairs: Physical progress + Cost overview (stacked columns) · India State map + Agency bars · Time overrun + Cost overrun
  ├─ Performance Analytics (badge = flagged count): 3 metric groups → 3 early-warning scatter plots
  │    with Non-revised / Revised switch → flagged-projects table (search, filter, sort)
  │    Selecting a chart lists only the projects it flags (charts 1–2: lagging or lapsed; chart 3: misaligned),
@@ -57,7 +57,7 @@ Project page (full page, replaces the earlier side drawer): opens from any flagg
 
 Key changes from the current page:
 - Filters apply instantly. The Show Data button is removed and active filters show as removable chips.
-- **Two stacked bars** replace the funnel. Both bars total the latest revised cost: *Approved cost* = original cost + cost escalation; *Spending* = expenditure + balance to spend. Segments are labelled with amount and share; a key strip below repeats the figures. (This replaced an earlier waterfall with a separate Revised cost bar.)
+- **Two stacked columns** (vertical) replace the funnel. Both columns total the latest revised cost: *Approved cost* = original cost + cost escalation; *Spending* = expenditure + balance to spend. Segments are labelled with amount and share; a key strip below repeats the figures. (This replaced an earlier waterfall with a separate Revised cost bar.)
 - **Agency donut → ranked horizontal bars**, with a Projects / Revised cost / Expenditure switch. Agencies beyond the top 8 are grouped as "Others".
 - **India State map (choropleth) plus ranked list.** The map is embedded in the page (about 46 KB, no external requests). Hovering a State shows its project count and original cost; tapping on a phone shows the same details, and a second tap filters. Selecting a State filters the page, and keyboard users can tab through States. Boundaries follow India's official map: Ladakh includes Gilgit-Baltistan and Aksai Chin, and Jammu & Kashmir is shown in full. Source: open data from github.com/udit-001/india-maps-data, merged from districts to States. *Before go-live, have the boundaries checked against the Survey of India outline.*
 - Every chart keeps its Chart/Table toggle. Tables use one format: `Original (**Revised**)`.
@@ -113,7 +113,7 @@ Issues found and fixed during the audit:
 - Reference-line labels overlapped dots. They were repositioned.
 - The issue column in the scrutiny table was cut off. It now sits next to the project name.
 - On phones the filters filled the first screen. They are now behind a Filters button.
-- Cost overview labels collided on phones. Narrow charts use shorter labels, and a segment too narrow for its label in the middle of a bar is left unlabelled (its figure stays in the key strip and tooltip).
+- Cost overview labels collided on phones. Narrow charts use shorter labels, and a thin top segment (escalation) is labelled above its column, and a thin middle segment is left unlabelled (its figure stays in the key strip and tooltip).
 
 Accessibility:
 - Status is never shown by colour alone: dots also differ in shape, and legends and flags have text labels.
