@@ -146,7 +146,7 @@ select:hover{border-color:var(--accent)}
 .linkbtn{border:0;background:none;color:var(--accent);font-weight:600;cursor:pointer;padding:2px 4px}
 
 /* ---------- view tabs ---------- */
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs{position:relative;display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
 .tabs a{display:flex;align-items:center;gap:8px;padding:10px 14px;text-decoration:none;color:var(--ink-2);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tabs a:hover{color:var(--ink)}
 .tabs a[aria-selected="true"]{color:var(--brand);border-bottom-color:var(--saffron)}
@@ -372,6 +372,88 @@ td.bad{color:var(--crit-ink);font-weight:700;background:rgba(208,59,59,.07)}
 footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:16px}
 
 /* ---------- responsive ---------- */
+/* ---------- Overview: summary cards that open a tab ---------- */
+a.linkcard{text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s}
+a.linkcard:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(10,51,114,.10)}
+a.linkcard:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.linkcard .go{font-size:12.5px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:4px;white-space:nowrap;padding-top:2px}
+.linkcard:hover .go span{transform:translateX(2px)} .linkcard .go span{transition:transform .15s}
+a.linkcard{container-type:inline-size}
+a.linkcard .card-h{padding:20px 24px 4px} a.linkcard .card-b{padding:16px 24px 24px;display:flex;flex-direction:column;justify-content:flex-start}
+.venn-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.venn-note{margin:8px 0 0;text-align:center;font-size:11.5px;color:var(--ink-3)}
+.venn{width:100%;height:auto;max-height:230px;display:block;margin:0 auto}
+.venn .rc{font-size:15px;font-weight:700;fill:var(--ink)} .venn .rc.z{fill:var(--ink-3);font-weight:500}
+.venn .nb{font-size:11px;font-weight:700;fill:#fff}
+.vlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.vlist li{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:4px 10px;align-items:center;font-size:13px}
+.vlist .nb{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700}
+.vlist .nm{font-weight:600;color:var(--ink)} .vlist .n{font-weight:700;font-size:14px;text-align:right}
+.vlist small{grid-column:2/-1;color:var(--ink-3);font-size:11.5px}
+.vsum{display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px;margin-top:6px}
+.vsum div{flex:1;min-width:90px}
+.vsum b{display:block;font-size:22px;line-height:1.1;margin-bottom:4px}
+.vsum span{font-size:12px;line-height:1.4;color:var(--ink-3);display:block}
+.dqvis{display:flex;flex-direction:column;align-items:center}
+.dqvis .dq-ring{width:176px;height:176px} .dqvis .dq-ring .c b{font-size:36px}
+.dqnote{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 12px;margin-top:14px}
+.vlist .nb.rn{background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2);font-size:10px}
+.vlist .meter{grid-column:2/-1;margin:2px 0}
+.vlist .n .of{font-size:12px;font-weight:600;color:var(--ink-3)}
+/* the cards rearrange by their own width, so they stay roomy at every screen size */
+@container (max-width:620px){.venn-wrap{grid-template-columns:1fr;gap:24px}.venn{max-height:240px}}
+@container (max-width:460px){.linkcard .card-h{flex-wrap:wrap}.linkcard .go{order:3;width:100%}}
+@media (max-width:640px){a.linkcard .card-h{padding:16px 16px 4px} a.linkcard .card-b{padding:12px 16px 18px}}
+/* ---------- Data Quality Assessment ---------- */
+.dq-hero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px}
+.dq-score{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;padding:18px 20px;align-items:start}
+.dq-ring{position:relative;width:156px;height:156px;flex:none}
+.dq-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.dq-ring circle{fill:none;stroke-width:12}
+.dq-ring .trk{stroke:var(--line)}
+.dq-ring .val{stroke-linecap:round;transition:stroke-dashoffset .8s ease}
+.dq-ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.dq-ring .c b{font-size:36px;line-height:1;font-weight:700;letter-spacing:-.02em}
+.dq-ring .c span{font-size:12px;color:var(--ink-3);margin-top:4px}
+.dq-left{display:flex;flex-direction:column;align-items:center;gap:10px}
+.dq-left .grade{font-size:13px;padding:3px 12px}
+.dq-sum{min-width:0;display:flex;flex-direction:column;gap:10px}
+.dq-sum .eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.dq-sum h2{margin:0;font-size:17px}
+.dq-sum .lede{margin:0;font-size:13px;color:var(--ink-2)}
+.catlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.catrow{width:100%;display:grid;grid-template-columns:28px minmax(0,1fr) auto;grid-template-areas:"rn nm sc" "rn mt mt" "rn lo lo";gap:4px 10px;align-items:center;text-align:left;
+  padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);cursor:pointer;font:inherit}
+.catrow:hover{border-color:var(--line-2);background:var(--surface-2)}
+.catrow[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent);background:var(--accent-soft)}
+.catrow .rn{grid-area:rn;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--ink-2)}
+.catrow .nm{grid-area:nm;font-size:13px;font-weight:600;min-width:0}
+.catrow .sc{grid-area:sc;font-size:12.5px;color:var(--ink-3);white-space:nowrap}
+.catrow .sc b{font-size:15px;color:var(--ink)}
+.catrow .meter{grid-area:mt}
+.catrow .lo{grid-area:lo;font-size:11.5px;color:var(--ink-3)}
+.dq-tbl{width:100%}
+.dq-tbl td,.dq-tbl th{vertical-align:middle}
+.dq-tbl .desc{white-space:normal;min-width:220px;color:var(--ink-2);font-size:12.5px}
+.dq-tbl tr.grp td{background:var(--surface-2);font-weight:700;font-size:12.5px;white-space:normal}
+.dq-tbl tr.grp td span{font-weight:600;color:var(--ink-3);margin-left:6px}
+.dq-tbl tr.sub td{font-weight:700;border-top:1px solid var(--line-2)}
+.dq-tbl tfoot td{font-weight:700;font-size:13.5px;border-top:2px solid var(--line-2);background:var(--surface)}
+.cbar{display:grid;grid-template-columns:minmax(70px,1fr) 48px;align-items:center;gap:8px;min-width:140px}
+.cbar .num{font-size:12.5px;text-align:right}
+.mk b{font-size:14px}
+.mk small{color:var(--ink-3);font-weight:600}
+.mk .rd{display:block;font-size:11px;color:var(--ink-3);font-weight:500;white-space:normal}
+.btn.sm{height:30px;padding:0 10px;font-size:12.5px}
+.dq-cats{flex-wrap:wrap}
+.dq-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+tr.sel td{background:var(--accent-soft)}
+@media (max-width:1100px){.dq-hero{grid-template-columns:1fr}}
+@media (max-width:640px){.dq-score{grid-template-columns:1fr;justify-items:stretch;padding:16px}.dq-left{flex-direction:row;justify-content:flex-start;gap:16px}.dq-ring{width:120px;height:120px}.dq-ring .c b{font-size:28px}.dq-tools{width:100%}.dq-tools>*{flex:1 1 100%}
+  .dq-cats{display:grid;grid-template-columns:1fr 1fr;width:100%;overflow:visible} .dq-cats button{padding:8px 6px;font-size:12.5px;white-space:normal;min-width:0;justify-content:center;text-align:center}
+  .dq-tbl .desc{display:none} .dq-tbl tr.grp td,.dq-tbl tr.sub td,.dq-tbl tfoot td{white-space:normal}}
+.dq-tbl .dsub{display:none;font-size:12px;color:var(--ink-3);font-weight:400;margin-top:2px;max-width:240px}
+@media (max-width:640px){.dq-tbl .dsub{display:block}}
 @media (max-width:1280px){.g-kpi{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:1100px){
   .g-3,.mgroup{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -530,11 +612,24 @@ footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:16px}
         <a href="#overview" role="tab" id="tab-overview" aria-controls="view-overview">Overview</a>
         <a href="#analytics" role="tab" id="tab-analytics" aria-controls="view-analytics">Performance Analytics <span class="badge" id="flagBadge">0</span></a>
         <a href="#scrutiny" role="tab" id="tab-scrutiny" aria-controls="view-scrutiny">Data Scrutiny <span class="badge crit" id="outBadge">0</span></a>
+        <a href="#quality" role="tab" id="tab-quality" aria-controls="view-quality">Data Quality Assessment <span class="badge" id="dqBadge">0</span></a>
       </nav>
 
       <!-- ================= OVERVIEW ================= -->
       <section id="view-overview" role="tabpanel" aria-labelledby="tab-overview" class="grid" style="gap:16px">
         <div class="grid g-kpi" id="kpis"></div>
+
+        <!-- Row 0: summaries that open the Performance Analytics and Data Quality tabs -->
+        <div class="grid g-2">
+          <a class="card linkcard" href="#analytics" id="ovWarn" aria-describedby="ovWarnSum">
+            <div class="card-h"><div class="t"><h2>Early-warning overlap</h2><p>How the projects flagged by each early-warning chart overlap</p></div><span class="go">Performance Analytics <span aria-hidden="true">→</span></span></div>
+            <div class="card-b" id="ovWarnBody"></div>
+          </a>
+          <a class="card linkcard" href="#quality" id="ovDq" aria-describedby="ovDqSum">
+            <div class="card-h"><div class="t"><h2>Data quality score</h2><p id="ovDqSub">PAIMANA data quality assessment, out of 100</p></div><span class="go">Data Quality Assessment <span aria-hidden="true">→</span></span></div>
+            <div class="card-b" id="ovDqBody"></div>
+          </a>
+        </div>
 
         <!-- Row 1: progress and cost -->
         <div class="grid g-2">
@@ -633,6 +728,51 @@ footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:16px}
         </article>
       </section>
 
+      <!-- ================= DATA QUALITY ASSESSMENT ================= -->
+      <section id="view-quality" role="tabpanel" aria-labelledby="tab-quality" class="grid" hidden>
+        <div class="notice" id="dqNote"><svg class="i"><use href="#i-info"/></svg><div></div></div>
+        <div class="dq-hero">
+          <article class="card dq-score" id="dqScore" aria-live="polite"></article>
+          <article class="card">
+            <div class="card-h"><div class="t"><h2>Score trend</h2><p>Overall score out of 100, by Flash Report month</p></div>
+              <div class="toggle" data-for="dqt"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
+            <div class="card-b">
+              <div class="chartbox" data-chart="dqt" style="height:230px"><canvas id="cDqTrend" role="img" aria-label="Overall data quality score by month"></canvas></div>
+              <div class="tablewrap" data-table="dqt" hidden></div>
+              <div class="sub" id="dqTrendNote" style="margin-top:8px;font-size:12px"></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="card" id="dqDetail">
+          <div class="card-h" style="flex-wrap:wrap"><div class="t"><h2 id="dqDetailTitle">Marks by check</h2><p id="dqDetailSub">How each check scored this month</p></div>
+            <div class="seg dq-cats" role="group" aria-label="Assessment category" id="dqCatSeg"></div></div>
+          <div class="card-b">
+            <div class="tablewrap" style="max-height:none"><table class="dq-tbl" id="dqTable"></table></div>
+            <details class="how" style="margin-top:12px"><summary><svg class="i" style="width:15px;height:15px"><use href="#i-info"/></svg>How the score is calculated</summary>
+              <code>Check score = (Passed ÷ Applicable projects) × Marks allocated</code>
+              <p style="margin:4px 0 0">Each of the four categories carries 25 marks, split equally between its checks (Category IV: equally between groups A, B and C, then between the checks in each group). A project <b>passes</b> a composite check only when every condition in it is met; several failures in one check count once. When a check has no applicable projects, its marks move to the other checks in the same group or category, so the total stays out of 100. Scores use unrounded values and are rounded to two decimals only for display.</p>
+              <p style="margin:6px 0 0">Grade bands (proposed, to be confirmed): <b>Excellent</b> 90 and above · <b>Good</b> 75–89.99 · <b>Needs improvement</b> 60–74.99 · <b>Poor</b> below 60.</p>
+            </details>
+          </div>
+        </article>
+
+        <article class="card" id="dqIssuesCard">
+          <div class="card-h" style="flex-wrap:wrap"><div class="t"><h2>Projects that lost marks</h2><p id="dqIssSub">Select a row to open the project</p></div>
+            <div class="dq-tools">
+              <div class="searchbox"><label for="dqSearch" class="sr-only">Search projects that lost marks</label><svg class="i"><use href="#i-search"/></svg><input id="dqSearch" class="input" placeholder="Search project, ID or agency"></div>
+              <div class="field" style="min-width:260px"><label for="dqCheck" class="sr-only">Filter by category or check</label><select id="dqCheck"></select></div>
+              <button class="btn" id="dqExport"><svg class="i"><use href="#i-dl"/></svg>Export list</button>
+            </div></div>
+          <div class="card-b"><div class="tablewrap" style="max-height:460px"><table id="dqIssues"></table></div></div>
+        </article>
+
+        <article class="card">
+          <div class="card-h"><div class="t"><h2>Agency scorecard</h2><p id="dqAgSub">Each implementing agency's score out of 100. Lowest first, so follow-up starts where it matters most. Select an agency to see its own assessment.</p></div></div>
+          <div class="card-b"><div class="tablewrap" style="max-height:none"><table id="dqAgency"></table></div></div>
+        </article>
+      </section>
+
       <!-- ================= PROJECT PAGE ================= -->
       <section id="view-project" class="grid" hidden aria-labelledby="pjTitle"></section>
 
@@ -724,6 +864,8 @@ function generateProjects() {
   return out;
 }
 const RAW = generateProjects();
+// A few projects report 100% physical progress while awaiting commissioning (used by data-quality check IV-C2)
+RAW.filter(p => p.phys >= 88 && !p.newly && p.reported).slice(0, 3).forEach(p => { p.phys = 100; });
 
 /* =====================================================================
    2. BUSINESS RULES  (from "Data analytics framework for ongoing projects")
@@ -782,9 +924,116 @@ function computeMetrics(list) {
 }
 
 /* =====================================================================
+   2b. DATA QUALITY ASSESSMENT  ("PAIMANA Data Quality Assessment Framework", 05.11.2026)
+   Four categories × 25 marks = 100. Check score = (passed ÷ applicable) × allocated marks.
+   A check with no applicable projects hands its marks to the other checks in its group / category
+   (and an empty group to the other groups). The Flash Report feed does not yet carry reporting history,
+   edit history, sanction dates or completion status, so those facts are sample values seeded per project and month.
+   ===================================================================== */
+const DQ_MANDATORY = ['Physical progress for the month', 'Cumulative expenditure', 'Anticipated commissioning date', 'Status remarks'];
+const reportedIn = (p, mb) => mb <= 0 ? p.reported : mulberry(p.id * 13 + mb * 7919)() > 0.085;
+const monLbl = (asOf, k) => new Date(asOf.getFullYear(), asOf.getMonth() - k, 1).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+function dqFacts(p, month) {
+  const mb = monthsBack(month), asOf = asOfFor(month), u = Array.from({ length: 24 }, mulberry(p.id * 31 + mb * 977 + 5));
+  const ongoing = !p.newly, f = {};
+  // I. reporting
+  f.reported = reportedIn(p, mb); f.missedPrev = !reportedIn(p, mb + 1);
+  const b0 = Math.floor(u[1] * 4); f.blank = f.reported && u[0] < 0.09 ? [DQ_MANDATORY[b0], ...(u[2] < 0.3 ? [DQ_MANDATORY[(b0 + 1) % 4]] : [])] : [];
+  // II. fixed fields changed during implementation
+  const otherAg = AGENCIES.map(a => a[0]).filter(a => a !== p.agency)[Math.floor(u[7] * (AGENCIES.length - 1))];
+  f.fixed = !ongoing ? {} : {
+    sanction: u[3] < 0.03 && `Sanction date changed from ${fmtDate(addMonths(p.start, -14))} to ${fmtDate(addMonths(p.start, -9))}`,
+    cost: u[4] < 0.035 && `Original cost changed from ${fmtCr(p.origCost * 0.92)} cr to ${fmtCr(p.origCost)} cr`,
+    doc: u[5] < 0.045 && `Original date of completion changed from ${fmtDate(addMonths(p.origEnd, -6))} to ${fmtDate(p.origEnd)}`,
+    agency: u[6] < 0.02 && `Implementing agency changed from “${otherAg}” to “${p.agency}”`,
+    stage: u[8] < 0.035 && 'Project stage changed from UI (under implementation) to UD' };
+  // III. past monthly values edited
+  const pm = 1 + Math.floor(u[11] * 5);
+  f.past = !ongoing ? {} : {
+    phys: u[9] < 0.085 && `Physical progress for ${monLbl(asOf, pm)} changed from ${fmt1(p.phys * .8)}% to ${fmt1(p.phys * .84)}%`,
+    exp: u[10] < 0.1 && `Expenditure for ${monLbl(asOf, pm + 1)} changed from ${fmtCr(p.exp * .78)} cr to ${fmtCr(p.exp * .74)} cr` };
+  // IV. sanctity
+  let sanction = addMonths(p.start, -(2 + Math.floor(u[12] * 16)));
+  if (u[13] < 0.025) sanction = null; else if (u[13] < 0.05) sanction = addMonths(p.start, 1 + Math.floor(u[14] * 5));
+  f.sanction = sanction;
+  f.a1 = !sanction ? ['Sanction date not entered'] : [
+    ...(sanction > p.start ? [`Sanction date ${fmtDate(sanction)} is after the start date ${fmtDate(p.start)}`] : []),
+    ...(sanction > p.latestEnd ? [`Sanction date ${fmtDate(sanction)} is after the commissioning date ${fmtDate(p.latestEnd)}`] : [])];
+  f.actualDone = u[15] < 0.05 ? (u[16] < 0.4 ? addMonths(p.start, -(1 + Math.floor(u[17] * 8))) : addMonths(p.start, 12 + Math.floor(u[17] * 30))) : null;
+  f.a2 = f.actualDone && f.actualDone < p.start ? [`Actual completion date ${fmtDate(f.actualDone)} is before the start date ${fmtDate(p.start)}`] : [];
+  f.b1 = u[18] < 0.02 ? ['Cumulative expenditure not reported'] : [
+    ...(p.exp < 0 ? ['Cumulative expenditure is negative'] : []),
+    ...(p.exp > p.latestCost ? [`Expenditure ${fmtCr(p.exp)} cr is more than the latest cost ${fmtCr(p.latestCost)} cr`] : []),
+    ...(u[19] < 0.03 ? [`Cumulative expenditure fell from ${fmtCr(p.exp * 1.06)} cr last month to ${fmtCr(p.exp)} cr, with no authorised correction`] : [])];
+  f.b2 = p.revCost != null && p.revCost < p.origCost ? [`Latest cost ${fmtCr(p.revCost)} cr is below the original cost ${fmtCr(p.origCost)} cr`]
+    : u[20] < 0.025 ? [`Latest cost ${fmtCr(p.origCost * .9)} cr is below the original cost ${fmtCr(p.origCost)} cr, with no approved revision`] : [];
+  f.dateDue = p.origEnd < asOf && p.phys < 100;                     // reported commissioning date has passed, work incomplete
+  f.dateOk = p.latestEnd >= asOf; f.completed = p.phys >= 100 && u[21] < 0.34;
+  return f;
+}
+const DQ = [
+  { key: 'I', title: 'Consistency of project status reporting', short: 'Reporting consistency',
+    desc: 'Is every project reported on time each month, with all mandatory fields filled?',
+    groups: [{ checks: [
+      { id: 'nr', label: 'Not reported', desc: 'Projects not reported for the month', app: () => true, pass: (p, f) => f.reported, why: () => 'Not reported for this month' },
+      { id: 'cnr', label: 'Consecutive non-reporting', desc: 'Projects not reported for two or more consecutive months (checked among projects that missed last month)', app: (p, f) => f.missedPrev, pass: (p, f) => f.reported, why: () => 'Not reported for this month or last month' },
+      { id: 'inc', label: 'Incomplete monthly submission', desc: 'Reported projects with mandatory monthly fields left blank', app: (p, f) => f.reported, pass: (p, f) => !f.blank.length, why: (p, f) => 'Left blank: ' + f.blank.join(', ') }] }] },
+  { key: 'II', title: 'Update of fixed (static) fields', short: 'Fixed fields',
+    desc: 'Have baseline particulars that should stay stable been changed for ongoing projects?',
+    groups: [{ checks: [
+      ['sanction', 'Sanction date', 'Sanction date of an ongoing project updated'],
+      ['cost', 'Original cost', 'Original cost of an ongoing project updated'],
+      ['doc', 'Original date of completion', 'Original date of completion (DoC) of an ongoing project updated'],
+      ['agency', 'Implementing agency', 'Implementing agency of an ongoing project updated'],
+      ['stage', 'Project stage', 'Under-implementation (UI) project moved to UD']].map(([k, label, desc]) =>
+        ({ id: k, label, desc, app: p => !p.newly, pass: (p, f) => !f.fixed[k], why: (p, f) => f.fixed[k] })) }] },
+  { key: 'III', title: 'Update of past values of dynamic fields', short: 'Past values',
+    desc: 'Have previously reported monthly values been changed after the month closed?',
+    groups: [{ checks: [
+      ['phys', 'Physical progress', 'Physical progress of an ongoing project updated for a past month'],
+      ['exp', 'Expenditure', 'Expenditure of an ongoing project updated for a past month']].map(([k, label, desc]) =>
+        ({ id: k, label, desc, app: p => !p.newly, pass: (p, f) => !f.past[k], why: (p, f) => f.past[k] })) }] },
+  { key: 'IV', title: 'Data inconsistency / sanctity issues', short: 'Data sanctity',
+    desc: 'Are dates, costs, expenditure, progress and status consistent with each other?',
+    groups: [
+      { key: 'A', title: 'Date and timeline inconsistencies', checks: [
+        { id: 'a1', label: 'Sanction date validity and chronology', desc: 'Sanction date is entered and is not later than the start date or the commissioning date', app: () => true, pass: (p, f) => !f.a1.length, why: (p, f) => f.a1.join('; ') },
+        { id: 'a2', label: 'Actual completion date consistency', desc: 'Actual completion date is not before the start date (projects with an actual completion date)', app: (p, f) => !!f.actualDone, pass: (p, f) => !f.a2.length, why: (p, f) => f.a2.join('; ') }] },
+      { key: 'B', title: 'Cost and expenditure inconsistencies', checks: [
+        { id: 'b1', label: 'Expenditure validity and consistency', desc: 'Expenditure is reported, not negative, not above the latest cost, and not lower than last month without an authorised correction', app: () => true, pass: (p, f) => !f.b1.length, why: (p, f) => f.b1.join('; ') },
+        { id: 'b2', label: 'Latest cost consistency', desc: 'Latest cost is not lower than the original cost unless an approved revision supports it', app: () => true, pass: (p, f) => !f.b2.length, why: (p, f) => f.b2.join('; ') }] },
+      { key: 'C', title: 'Physical progress, schedule and project-status inconsistencies', checks: [
+        { id: 'c1', label: 'Commissioning schedule consistency', desc: 'Where the commissioning date has passed and work is incomplete, the date has been revised', app: (p, f) => f.dateDue, pass: (p, f) => f.dateOk, why: p => `Commissioning date ${fmtDate(p.latestEnd)} has passed at ${fmt1(p.phys)}% progress and has not been revised` },
+        { id: 'c2', label: 'Physical progress and completion status', desc: 'Projects reporting 100% physical progress are marked as completed', app: p => p.phys >= 100, pass: (p, f) => f.completed, why: () => 'Physical progress is 100% but the project is not marked as completed' },
+        { id: 'c3', label: 'Physical progress validity', desc: 'Reported physical progress is between 0% and 100%', app: () => true, pass: p => p.phys >= 0 && p.phys <= 100, why: p => `Physical progress reported as ${fmt1(p.phys)}%` }] }] }];
+
+function dqAssess(list, month) {
+  const F = new Map(list.map(p => [p.id, dqFacts(p, month)]));
+  const cats = DQ.map(c => {
+    const groups = c.groups.map(g => ({ ...g, checks: g.checks.map(ch => {
+      const app = list.filter(p => ch.app(p, F.get(p.id))), fails = app.filter(p => !ch.pass(p, F.get(p.id)));
+      return { ...ch, cat: c.key, applicable: app.length, passed: app.length - fails.length, fails: fails.map(p => ({ p, why: ch.why(p, F.get(p.id)) })) }; }) }));
+    const liveG = groups.filter(g => g.checks.some(ch => ch.applicable));
+    groups.forEach(g => {
+      g.base = 25 / groups.length; g.max = liveG.includes(g) ? 25 / liveG.length : 0;
+      const live = g.checks.filter(ch => ch.applicable);
+      g.checks.forEach(ch => { ch.base = g.base / g.checks.length; ch.max = ch.applicable ? g.max / live.length : 0; ch.marks = ch.applicable ? ch.passed / ch.applicable * ch.max : 0; ch.each = ch.applicable ? ch.max / ch.applicable : 0; });
+      g.score = g.checks.reduce((a, ch) => a + ch.marks, 0); });
+    const checks = groups.flatMap(g => g.checks);
+    return { ...c, groups, checks, score: groups.reduce((a, g) => a + g.score, 0), live: liveG.length > 0 };
+  });
+  // an entire category with nothing to assess hands its 25 marks to the others
+  const liveC = cats.filter(c => c.live), k = liveC.length ? 4 / liveC.length : 0;
+  const total = liveC.reduce((a, c) => a + c.score, 0) * k;
+  return { cats, total, n: list.length, empty: !list.length };
+}
+const dqGrade = s => s >= 90 ? { t: 'Excellent', cls: 'ok', col: '--good' } : s >= 75 ? { t: 'Good', cls: 'info', col: '--s1' } : s >= 60 ? { t: 'Needs improvement', cls: 'warn', col: '--warn' } : { t: 'Poor', cls: 'crit', col: '--crit' };
+const fmt2 = n => isFinite(n) ? n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '–';
+
+/* =====================================================================
    3. STATE + FORMATTING
    ===================================================================== */
-const S = { seg: 'all', agency: '', state: '', cost: '', group: '', month: '2026-09', view: 'overview', scGroup: 'nonrev', agMeasure: 'count', hidden: {} };
+const S = { seg: 'all', agency: '', state: '', cost: '', group: '', month: '2026-09', view: 'overview', scGroup: 'nonrev', agMeasure: 'count', hidden: {}, dqCat: 'I', dqCheck: '', dqSort: { k: 'total', dir: 1 } };
 const fmtInt = n => Math.round(n).toLocaleString('en-IN');
 const fmtCr = n => '₹' + Math.round(n).toLocaleString('en-IN');
 const fmt1 = n => isFinite(n) ? (Math.round(n * 10) / 10).toLocaleString('en-IN', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : '–';
@@ -834,7 +1083,7 @@ const valueLabels = { id: 'valueLabels', afterDatasetsDraw(chart, _a, o) {
   chart.data.datasets.forEach((ds, i) => chart.getDatasetMeta(i).data.forEach((el, j) => {
     const v = o.text ? o.text(j, chart) : ds.data[j]; if (!v && v !== 0) return;
     if (chart.options.indexAxis === 'y') { ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(v, el.x + 6, el.y); }
-    else { ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText(v, el.x, Math.min(el.y, el.base) - 4); }
+    else { ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText(v, el.x, el.base == null ? el.y - 10 : Math.min(el.y, el.base) - 4); }
   })); ctx.restore(); } };
 // Reference lines and shaded zones for scatter charts (data coordinates)
 const refLayer = { id: 'refLayer', beforeDatasetsDraw(chart, _a, o) {
@@ -864,7 +1113,7 @@ function render() {
   const mOpt = $('#fMonth').selectedOptions[0].textContent;
   $('#frLabel').textContent = mOpt; $('#asOfLabel').textContent = fmtDate(asOfFor(S.month));
   renderChips(); renderKPIs(); renderWaterfall(); renderBadges(); renderStates(); renderAgency(); renderDists();
-  renderMetrics(); renderScatters(); renderFlagTable(); renderScrutiny();
+  renderMetrics(); renderScatters(); renderFlagTable(); renderScrutiny(); renderQuality(); renderOvInsights();
   if (S.view === 'project' && currentProject) renderProject(ALL.find(p => p.id === currentProject) || RAW.find(p => p.id === currentProject));
 }
 
@@ -1175,6 +1424,149 @@ function renderScrutiny() {
       : '<tr><td colspan="9" style="text-align:center;padding:28px;color:var(--ink-3)">No projects in this selection need data scrutiny.</td></tr>') + '</tbody>';
 }
 
+/* ---------- Data Quality Assessment tab ---------- */
+let DQR = null, DQP = null, DQ_BY_ID = {};
+const DQ_MONTHS = ['2026-06', '2026-07', '2026-08', '2026-09'];
+const dqScope = (month, keepAgency = true) => { const a = S.agency; if (!keepAgency) S.agency = ''; const L = applyFilters(month === S.month ? ALL : dataFor(month), true); S.agency = a; return L; };
+const monthName = m => $(`#fMonth option[value="${m}"]`).textContent;
+function renderQuality() {
+  const R = DQR = dqAssess(dqScope(S.month), S.month);
+  const pi = DQ_MONTHS.indexOf(S.month), P = DQP = pi > 0 ? dqAssess(dqScope(DQ_MONTHS[pi - 1]), DQ_MONTHS[pi - 1]) : null;
+  DQ_BY_ID = {}; R.cats.forEach(c => c.checks.forEach(ch => ch.fails.forEach(x => (DQ_BY_ID[x.p.id] = DQ_BY_ID[x.p.id] || []).push({ cat: c.key, label: ch.label, why: x.why }))));
+  const g = dqGrade(R.total), ags = new Set(dqScope(S.month).map(p => p.agency)).size;
+  $('#dqBadge').textContent = R.empty ? '–' : Math.round(R.total); $('#dqBadge').setAttribute('aria-label', R.empty ? 'no score' : `score ${fmt1(R.total)} out of 100`);
+  const scrN = dqScope(S.month).filter(p => p.outlier).length;
+  $('#dqNote div').innerHTML = `The assessment covers all <b>${R.n}</b> projects under implementation in this selection${scrN ? `, including the ${scrN} under data scrutiny` : ''}. The Reported / Not reported buttons don't apply here, because reporting is one of the things being scored. <span class="sub">Reporting history, edit history, sanction dates and completion status are sample values until the PAIMANA feed supplies them.</span>`;
+  // ---- score card
+  const C = 2 * Math.PI * 52, off = C * (1 - (R.empty ? 0 : R.total) / 100);
+  const pDelta = P && !P.empty ? delta(R.total, P.total, true, ' marks') : '<span class="sub">No earlier month to compare</span>';
+  $('#dqScore').innerHTML = R.empty ? `<div class="dq-sum" style="grid-column:1/-1"><h2>No projects in this selection</h2><p class="lede">Change or reset the filters to see a data quality score.</p></div>` : `
+    <div class="dq-left">
+      <div class="dq-ring" role="img" aria-label="Overall data quality score ${fmt2(R.total)} out of 100, graded ${g.t}">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" cx="60" cy="60" r="52" style="stroke:var(${g.col});stroke-dasharray:${C};stroke-dashoffset:${off}"/></svg>
+        <div class="c"><b class="num">${fmt1(R.total)}</b><span>out of 100</span></div></div>
+      <span class="flag ${g.cls} grade">${g.cls === 'ok' || g.cls === 'info' ? '✓' : '!'} ${g.t}</span>
+    </div>
+    <div class="dq-sum">
+      <div><div class="eyebrow">Overall PAIMANA data quality score · ${monthName(S.month)}</div>
+        <h2 style="margin-top:4px">${fmt2(R.total)} <span class="sub" style="font-size:14px;font-weight:600">/ 100</span> &nbsp;${pDelta}</h2>
+        <p class="lede">${R.n} projects from ${ags} agenc${ags === 1 ? 'y' : 'ies'}${S.agency ? ` (${esc(S.agency)})` : ''}. Select a category to see how its marks were lost.</p></div>
+      <ul class="catlist">${R.cats.map(c => { const lost = 25 - c.score, pn = new Set(c.checks.flatMap(ch => ch.fails.map(x => x.p.id))).size;
+        return `<li><button class="catrow" data-dqcat="${c.key}" aria-pressed="${S.dqCat === c.key}" aria-label="Category ${c.key}, ${c.title}: ${fmt2(c.score)} of 25 marks. Show checks">
+          <span class="rn">${c.key}</span><span class="nm">${c.short}</span><span class="sc num"><b>${fmt2(c.score)}</b> / 25</span>
+          <span class="meter" aria-hidden="true"><i style="width:${c.score / 25 * 100}%;background:var(${dqGrade(c.score * 4).col})"></i></span>
+          <span class="lo">${lost < 0.005 ? 'Full marks' : `${fmt2(lost)} marks lost · ${pn} project${pn === 1 ? '' : 's'}`}</span></button></li>`; }).join('')}</ul>
+    </div>`;
+  // ---- trend
+  const months = DQ_MONTHS.slice(0, pi + 1), T = months.map(m => m === S.month ? R : dqAssess(dqScope(m), m));
+  const vals = T.map(t => t.empty ? null : t.total), lo = Math.max(0, Math.floor((Math.min(...vals.filter(v => v != null), 75) - 8) / 5) * 5);
+  const o = baseOpts(); o.layout = { padding: { top: 18, left: 4, right: 8 } };
+  o.scales = { y: { min: lo, max: 100, grid: gridOpts(), border: { display: false }, ticks: { stepSize: 5 } }, x: { offset: true, grid: { display: false }, border: { display: false }, ticks: { color: cv('--ink-2'), maxRotation: 0, autoSkip: false } } };
+  o.plugins.valueLabels = { on: true, text: j => vals[j] == null ? '' : fmt1(vals[j]) };
+  const n = months.length;   // grade thresholds as reference lines, so a reader can see which band each month falls in
+  o.plugins.refLayer = { items: [[90, 'Excellent ≥ 90'], [75, 'Good ≥ 75'], [60, 'Needs improvement ≥ 60']].filter(([v]) => v > lo).flatMap(([v, l]) =>
+    [{ line: [[-0.5, v], [n - 0.5, v]], color: cv('--line-2'), dash: [4, 4] }]) };
+  o.scales.y.afterBuildTicks = ax => { ax.ticks = [...new Set([lo, 60, 75, 90, 100])].filter(v => v >= lo).map(value => ({ value })); };
+  o.plugins.tooltip.callbacks = { title: c => monthName(months[c[0].dataIndex]), label: c => `Overall: ${fmt2(T[c.dataIndex].total)} / 100 (${dqGrade(T[c.dataIndex].total).t})`, afterLabel: c => T[c.dataIndex].cats.map(k => `${k.key}. ${k.short}: ${fmt2(k.score)} / 25`).join('\n') };
+  mkChart('cDqTrend', { type: 'line', data: { labels: months.map(m => monthName(m).slice(0, 3) + monthName(m).replace(/.* 20(\d\d)$/, " '$1")), datasets: [{ data: vals, borderColor: cv('--s2'), borderWidth: 2.5, tension: .25,
+    pointRadius: months.map(m => m === S.month ? 6 : 4), pointHoverRadius: 7, pointBackgroundColor: months.map(m => m === S.month ? cv('--s2') : cv('--surface')), pointBorderColor: cv('--s2'), pointBorderWidth: 2 }] }, options: o });
+  tableInto('dqt', ['Month', 'I', 'II', 'III', 'IV', 'Overall / 100'], T.map((t, i) => [monthName(months[i]), ...t.cats.map(k => fmt2(k.score)), `<b>${fmt2(t.total)}</b>`]), [1, 2, 3, 4, 5], { sr: false });
+  $('#dqTrendNote').textContent = months.length > 1 ? `Change since ${monthName(months[0])}: ${T.at(-1).total >= T[0].total ? '+' : '−'}${fmt2(Math.abs(T.at(-1).total - T[0].total))} marks. The filled dot is the selected month. Dashed lines mark the grade bands: 90 Excellent, 75 Good, 60 Needs improvement.` : 'Earlier months appear here as Flash Reports are added.';
+  renderDqDetail(); renderDqIssues(); renderDqAgency();
+}
+function renderDqDetail() {
+  const c = DQR.cats.find(k => k.key === S.dqCat);
+  $('#dqCatSeg').innerHTML = DQR.cats.map(k => `<button data-dqcat="${k.key}" aria-pressed="${k.key === S.dqCat}">${k.key}. ${k.short} <span class="c num">${fmt1(k.score)}</span></button>`).join('');
+  $('#dqDetailTitle').textContent = `${c.key}. ${c.title}`;
+  $('#dqDetailSub').textContent = `${c.desc} ${fmt2(c.score)} of 25 marks.`;
+  const row = ch => {
+    const na = !ch.applicable, pct = na ? 0 : ch.passed / ch.applicable * 100, moved = !na && Math.abs(ch.max - ch.base) > 1e-9;
+    return `<tr><td style="white-space:normal;min-width:180px"><b>${ch.label}</b><div class="dsub">${ch.desc}</div></td><td class="desc">${ch.desc}</td>
+      <td class="r num">${na ? '—' : `${ch.passed} / ${ch.applicable}`}</td>
+      <td>${na ? '<span class="flag info">Not applicable</span>' : `<div class="cbar"><span class="meter" aria-hidden="true"><i style="width:${pct}%;background:var(${dqGrade(pct).col})"></i></span><span class="num">${fmt1(pct)}%</span></div>`}</td>
+      <td class="r mk num">${na ? `<small>0 / ${fmt2(ch.base)}</small><span class="rd">Marks moved to the other checks</span>` : `<b>${fmt2(ch.marks)}</b> <small>/ ${fmt2(ch.max)}</small>${moved ? `<span class="rd">Includes ${fmt2(ch.max - ch.base)} moved from a check that doesn't apply</span>` : ''}`}</td>
+      <td>${ch.fails.length ? `<button class="btn sm" data-dqcheck="${c.key}:${ch.id}" aria-label="View ${ch.fails.length} projects that failed ${ch.label}">View ${ch.fails.length} project${ch.fails.length === 1 ? '' : 's'}</button>` : na ? '' : '<span class="flag ok">✓ All passed</span>'}</td></tr>`; };
+  const multi = c.groups.length > 1;
+  $('#dqTable').innerHTML = `<caption class="sr-only">Marks for each check in category ${c.key}</caption><thead><tr><th>Check</th><th class="desc">What is checked</th><th class="r">Passed / applicable</th><th>Compliance</th><th class="r">Marks</th><th><span class="sr-only">Projects</span></th></tr></thead><tbody>` +
+    c.groups.map(g => (multi ? `<tr class="grp"><td colspan="6">${g.key}. ${g.title}<span>${fmt2(g.max)} marks${Math.abs(g.max - g.base) > 1e-9 ? ' (incl. redistributed)' : ''}</span></td></tr>` : '') + g.checks.map(row).join('') +
+      (multi ? `<tr class="sub"><td>Subtotal ${g.key}</td><td class="desc"></td><td colspan="2"></td><td class="r num">${fmt2(g.score)} <small style="color:var(--ink-3)">/ ${fmt2(g.max)}</small></td><td></td></tr>` : '')).join('') +
+    `</tbody><tfoot><tr><td>Category ${c.key} score</td><td class="desc"></td><td colspan="2"></td><td class="r num">${fmt2(c.score)} <small style="color:var(--ink-3)">/ 25</small></td><td></td></tr></tfoot>`;
+}
+function dqIssueList() {
+  const q = ($('#dqSearch').value || '').trim().toLowerCase(), [fc, fk] = S.dqCheck.split(':');
+  const L = DQR.cats.filter(c => !fc || c.key === fc).flatMap(c => c.checks.filter(ch => !fk || ch.id === fk).flatMap(ch => ch.fails.map(x => ({ ...x, c, ch }))))
+    .filter(x => !q || (x.p.name + ' ' + x.p.id + ' ' + x.p.agency + ' ' + STATES[x.p.state]).toLowerCase().includes(q));
+  return L.sort((a, b) => b.ch.each - a.ch.each || a.p.name.localeCompare(b.p.name));
+}
+function renderDqIssues() {
+  const sel = $('#dqCheck');
+  sel.innerHTML = `<option value="">All categories and checks</option>` + DQR.cats.map(c => `<optgroup label="${c.key}. ${c.short}"><option value="${c.key}">All of category ${c.key}</option>${c.checks.map(ch => `<option value="${c.key}:${ch.id}"${ch.fails.length ? '' : ' disabled'}>${ch.label} (${ch.fails.length})</option>`).join('')}</optgroup>`).join('');
+  if (![...sel.options].some(o => o.value === S.dqCheck)) S.dqCheck = '';
+  sel.value = S.dqCheck;
+  const L = dqIssueList(), pn = new Set(L.map(x => x.p.id)).size;
+  $('#dqIssSub').textContent = `${L.length} issue${L.length === 1 ? '' : 's'} in ${pn} project${pn === 1 ? '' : 's'} · biggest loss of marks first · select a row to open the project`;
+  $('#dqIssues').innerHTML = `<caption class="sr-only">Projects that lost marks</caption><thead><tr><th>Sr.</th><th>Project</th><th>Agency</th><th>Check failed</th><th>What was found</th><th class="r" title="Marks this one issue takes off the overall score">Marks lost</th></tr></thead><tbody>` +
+    (L.length ? L.map((x, i) => `<tr class="click" tabindex="0" data-id="${x.p.id}"><td class="num">${i + 1}</td><td style="white-space:normal;min-width:230px"><b>${esc(x.p.name)}</b><div class="sub">${x.p.id} · ${esc(STATES[x.p.state])}</div></td>
+      <td>${esc(AG_SHORT[x.p.agency] || x.p.agency)}</td><td style="white-space:normal;min-width:180px"><span class="flag ${x.c.key === 'IV' ? 'crit' : x.c.key === 'I' ? 'warn' : 'ser'}">${x.c.key}</span>${x.ch.label}</td>
+      <td style="white-space:normal;min-width:260px;color:var(--ink-2)">${esc(x.why)}</td><td class="r num">−${fmt2(x.ch.each)}</td></tr>`).join('')
+      : `<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--ink-3)">${DQR.empty ? 'No projects in this selection.' : 'No projects lost marks for this selection. ✓'}</td></tr>`) + '</tbody>';
+}
+function renderDqAgency() {
+  const base = dqScope(S.month, false), names = [...new Set(base.map(p => p.agency))];
+  const rows = names.map(a => { const L = base.filter(p => p.agency === a), r = dqAssess(L, S.month); return { a, n: L.length, r, total: r.total, I: r.cats[0].score, II: r.cats[1].score, III: r.cats[2].score, IV: r.cats[3].score }; });
+  const { k, dir } = S.dqSort; rows.sort((x, y) => k === 'a' ? x.a.localeCompare(y.a) * dir : ((x[k] - y[k]) * dir || x.a.localeCompare(y.a)));
+  const th = (key, l, r = true) => `<th class="${r ? 'r' : ''}" aria-sort="${S.dqSort.k === key ? (dir > 0 ? 'ascending' : 'descending') : 'none'}"><button class="linkbtn" data-dqsort="${key}" style="color:var(--ink-2)">${l}${S.dqSort.k === key ? (dir < 0 ? ' ↓' : ' ↑') : ''}</button></th>`;
+  $('#dqAgSub').textContent = S.agency ? `Showing every agency for comparison; ${S.agency} is highlighted. Select another agency to switch, or select the highlighted one to show all.` : "Each implementing agency's score out of 100, lowest first so follow-up starts where it matters most. Select an agency to see its own assessment.";
+  $('#dqAgency').innerHTML = `<caption class="sr-only">Data quality score by implementing agency</caption><thead><tr><th>Sr.</th>${th('a', 'Agency', false)}${th('n', 'Projects')}${th('I', 'I. Reporting')}${th('II', 'II. Fixed fields')}${th('III', 'III. Past values')}${th('IV', 'IV. Sanctity')}${th('total', 'Overall / 100')}<th>Grade</th></tr></thead><tbody>` +
+    rows.map((x, i) => { const g = dqGrade(x.total); return `<tr class="${x.a === S.agency ? 'sel' : ''}" data-dqag="${esc(x.a)}" tabindex="0" style="cursor:pointer" aria-label="${esc(x.a)}: ${fmt2(x.total)} out of 100, ${g.t}. Select to ${x.a === S.agency ? 'show all agencies' : 'see this agency'}">
+      <td class="num">${i + 1}</td><td style="white-space:normal;min-width:170px"><b>${esc(x.a)}</b></td><td class="r num">${x.n}</td>
+      ${['I', 'II', 'III', 'IV'].map(kk => `<td class="r num">${fmt2(x[kk])}</td>`).join('')}
+      <td class="r" style="min-width:150px"><div class="cbar" style="grid-template-columns:minmax(60px,1fr) 52px"><span class="meter" aria-hidden="true"><i style="width:${x.total}%;background:var(${g.col})"></i></span><b class="num" style="text-align:right">${fmt2(x.total)}</b></div></td>
+      <td><span class="flag ${g.cls}">${g.t}</span></td></tr>`; }).join('') + '</tbody>';
+}
+
+/* ---------- Overview: early-warning overlap (Venn) + data quality score ---------- */
+function renderOvInsights() {
+  // Early-warning overlap: every active project (outside data scrutiny), revised and non-revised together
+  const act = CUR.filter(p => !p.outlier), col = [cv('--s1'), cv('--teal'), cv('--serious')];
+  const sets = SC.map(c => new Set(act.filter(p => CHART_FLAG[c.id](p)).map(p => p.id)));
+  const reg = {}; act.forEach(p => { const k = sets.map(st => st.has(p.id) ? 1 : 0).join(''); reg[k] = (reg[k] || 0) + 1; });
+  const R = k => reg[k] || 0, union = act.length - R('000'), all3 = R('111');
+  const t = (x, y, k) => `<text class="rc${R(k) ? '' : ' z'}" x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${R(k)}</text>`;
+  const circ = [[128, 104], [232, 104], [180, 186]];
+  const svg = `<svg class="venn" viewBox="0 0 360 290" role="img" aria-labelledby="ovWarnSum">
+    ${circ.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="80" fill="${col[i]}" fill-opacity=".16" stroke="${col[i]}" stroke-width="2"/>`).join('')}
+    ${t(92, 86, '100')}${t(268, 86, '010')}${t(180, 236, '001')}${t(180, 76, '110')}${t(130, 164, '101')}${t(230, 164, '011')}
+    <circle cx="180" cy="130" r="17" fill="var(--surface)" stroke="var(--line-2)"/>${t(180, 131, '111')}
+    ${[[70, 34], [290, 34], [180, 278]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="10" fill="${col[i]}"/><text class="nb" x="${x}" y="${y + .5}" text-anchor="middle" dominant-baseline="middle">${i + 1}</text>`).join('')}
+  </svg>`;
+  const only = ['100', '010', '001'];
+  $('#ovWarnBody').innerHTML = `<div class="venn-wrap"><div>${svg}<p class="venn-note">Circles show overlaps, not size</p></div><div style="display:flex;flex-direction:column;gap:20px">
+    <ul class="vlist">${SC.map((c, i) => `<li><span class="nb" style="background:${col[i]}">${i + 1}</span><span class="nm">${c.title}</span><span class="n num">${sets[i].size}</span>
+      <small>${c.id === 'sc3' ? 'Misaligned' : 'Lagging or lapsed'} · ${R(only[i])} only in this chart</small></li>`).join('')}</ul>
+    <div class="vsum"><div><b class="num">${union}</b><span>flagged by at least one chart (of ${act.length})</span></div><div><b class="num">${all3}</b><span>flagged by all three</span></div></div>
+  </div></div>
+  <p class="sr-only" id="ovWarnSum">${union} of ${act.length} active projects are flagged by at least one early-warning chart; ${all3} by all three. ${SC.map((c, i) => `${c.title}: ${sets[i].size}`).join('; ')}. Opens Performance Analytics.</p>`;
+
+  // Data quality score
+  const D = DQR, g = dqGrade(D.total), C = 2 * Math.PI * 52, off = C * (1 - (D.empty ? 0 : D.total) / 100);
+  const issues = D.cats.reduce((a, c) => a + c.checks.reduce((b, ch) => b + ch.fails.length, 0), 0), pn = Object.keys(DQ_BY_ID).length;
+  $('#ovDqSub').textContent = `PAIMANA data quality assessment · ${monthName(S.month)}`;
+  // same structure as the overlap card: visual on top / left, numbered list, then two totals
+  $('#ovDqBody').innerHTML = D.empty ? '<p class="sub">No projects in this selection.</p>' : `<div class="venn-wrap">
+    <div class="dqvis"><div class="dq-ring" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" cx="60" cy="60" r="52" style="stroke:var(${g.col});stroke-dasharray:${C};stroke-dashoffset:${off}"/></svg>
+      <div class="c"><b class="num">${fmt1(D.total)}</b><span>out of 100</span></div></div>
+      <p class="venn-note dqnote"><span class="flag ${g.cls}">${g.cls === 'ok' || g.cls === 'info' ? '✓' : '!'} ${g.t}</span>${DQP && !DQP.empty ? `<span>${delta(D.total, DQP.total, true, ' marks')}</span>` : ''}</p></div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <ul class="vlist">${D.cats.map(c => { const lost = 25 - c.score, n = new Set(c.checks.flatMap(ch => ch.fails.map(x => x.p.id))).size;
+        return `<li><span class="nb rn">${c.key}</span><span class="nm">${c.short}</span><span class="n num">${fmt2(c.score)}<span class="of"> / 25</span></span>
+          <span class="meter" aria-hidden="true"><i style="width:${c.score / 25 * 100}%;background:var(${dqGrade(c.score * 4).col})"></i></span>
+          <small>${lost < 0.005 ? 'Full marks' : `${fmt2(lost)} marks lost · ${n} project${n === 1 ? '' : 's'}`}</small></li>`; }).join('')}</ul>
+      <div class="vsum"><div><b class="num">${pn}</b><span>projects lost marks</span></div><div><b class="num">${issues}</b><span>issues to correct</span></div></div>
+    </div></div>
+  <p class="sr-only" id="ovDqSum">Overall data quality score ${fmt2(D.total)} out of 100, ${g.t}. ${D.cats.map(c => `${c.key}. ${c.short} ${fmt2(c.score)} of 25`).join('; ')}. ${pn} projects lost marks. Opens Data Quality Assessment.</p>`;
+}
+
 /* ---------- Project page (full-page view; opens from any project row or dot) ----------
    Sections follow "project dashboard.docx": title → six headline tiles (with change from last quarter)
    → physical & financial progress donuts → TOR / COR with causes → project details → project timeline
@@ -1245,12 +1637,13 @@ function renderProject(p) {
   host.innerHTML = `
     <div class="pj-top">
       <div class="t">
-        <button class="backbtn" id="pjBack"><svg class="i"><use href="#i-chev"/></svg>Back to ${S.prevView === 'scrutiny' ? 'Data Scrutiny' : S.prevView === 'overview' ? 'Overview' : 'flagged projects'}</button>
-        <div class="crumb">Dashboard / ${S.prevView === 'scrutiny' ? 'Data Scrutiny' : 'Performance Analytics'} / Project ${p.id}</div>
+        <button class="backbtn" id="pjBack"><svg class="i"><use href="#i-chev"/></svg>Back to ${S.prevView === 'scrutiny' ? 'Data Scrutiny' : S.prevView === 'overview' ? 'Overview' : S.prevView === 'quality' ? 'Data Quality Assessment' : 'flagged projects'}</button>
+        <div class="crumb">Dashboard / ${S.prevView === 'scrutiny' ? 'Data Scrutiny' : S.prevView === 'quality' ? 'Data Quality Assessment' : 'Performance Analytics'} / Project ${p.id}</div>
         <h1 class="pj-title" id="pjTitle" tabindex="-1">${esc(p.name)}</h1>
         <div class="pj-meta"><span class="num">ID ${p.id}</span><span>·</span><span>${esc(p.agency)}</span><span>·</span><span>${esc(STATES[p.state])}</span>
           <span class="pill">${p.revised ? 'Revised' : 'Not revised'}</span><span class="pill"><span class="dot" style="background:${p.reported ? 'var(--good)' : 'var(--warn)'}"></span>${p.reported ? 'Updated in this Flash Report' : 'Not reported this month'}</span></div>
         <div style="margin-top:8px">${flags}</div>
+        ${(DQ_BY_ID[p.id] || []).length ? `<div class="notice warn" style="margin-top:10px"><svg class="i"><use href="#i-shield"/></svg><div><b>Data quality: ${DQ_BY_ID[p.id].length} issue${DQ_BY_ID[p.id].length === 1 ? '' : 's'} this month</b><ul style="margin:4px 0 0;padding-left:18px">${DQ_BY_ID[p.id].map(x => `<li><b>${x.cat}. ${x.label}</b> · ${esc(x.why)}</li>`).join('')}</ul></div></div>` : ''}
       </div>
     </div>
     ${p.outlier ? `<div class="notice warn"><svg class="i"><use href="#i-shield"/></svg><div><b>This project is under data scrutiny.</b> Its Flash Report values failed a check, so the charts below may be misleading: ${p.issues.map(i => esc(i.text)).join('; ')}.</div></div>` : ''}
@@ -1333,11 +1726,12 @@ function closeProject() {
 function setView(force) {
   const v = force || (location.hash || '#overview').slice(1);
   const pm = /^project-(\d+)$/.exec(v), proj = pm && ALL.find(p => p.id === +pm[1]);
-  S.view = proj ? 'project' : ['overview', 'analytics', 'scrutiny'].includes(v) ? v : 'overview';
+  S.view = proj ? 'project' : ['overview', 'analytics', 'scrutiny', 'quality'].includes(v) ? v : 'overview';
   const onProject = S.view === 'project';
   ['dashHead', 'dashToolbar', 'dashTabs'].forEach(id => { $('#' + id).hidden = onProject; });
   $('#view-project').hidden = !onProject;
-  ['overview', 'analytics', 'scrutiny'].forEach(k => { $('#view-' + k).hidden = k !== S.view; $('#tab-' + k).setAttribute('aria-selected', k === S.view); });
+  ['overview', 'analytics', 'scrutiny', 'quality'].forEach(k => { $('#view-' + k).hidden = k !== S.view; $('#tab-' + k).setAttribute('aria-selected', k === S.view); });
+  if (!onProject) { const tb = $('#dashTabs'), ta = $('#tab-' + S.view); if (ta.offsetLeft < tb.scrollLeft || ta.offsetLeft + ta.offsetWidth > tb.scrollLeft + tb.clientWidth) tb.scrollLeft = ta.offsetLeft - 16; }  // keep the selected tab visible on phones
   if (onProject) { currentProject = proj.id; renderProject(proj); scrollTo(0, 0); $('#pjTitle').focus({ preventScroll: true }); }
   else { ['pjDonutP', 'pjDonutF', 'pjLine'].forEach(id => { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }); $('#view-project').innerHTML = ''; }
   Object.values(charts).forEach(c => c.resize());
@@ -1367,15 +1761,26 @@ function init() {
     const pk = e.target.closest('.pickbtn'); if (pk) { selectChart(pk.dataset.pick); return; }
     const scCard = e.target.closest('#scatters .card'); if (scCard && !e.target.closest('button, canvas, .tablewrap, a, input, select')) { selectChart(scCard.querySelector('canvas').id); return; }
     const lg = e.target.closest('.lg button'); if (lg) { const ch = charts[lg.dataset.sc], i = +lg.dataset.i, vis = ch.isDatasetVisible(i); ch.setDatasetVisibility(i, !vis); ch.update(); S.hidden[lg.dataset.sc + lg.dataset.k] = vis; lg.setAttribute('aria-pressed', !vis); return; }
+    const dc = e.target.closest('[data-dqcat]'); if (dc) { S.dqCat = dc.dataset.dqcat; $$('[data-dqcat]').forEach(b => b.setAttribute('aria-pressed', b.dataset.dqcat === S.dqCat)); renderDqDetail();
+      if (dc.classList.contains('catrow')) $('#dqDetail').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); return; }
+    const dk = e.target.closest('[data-dqcheck]'); if (dk) { S.dqCheck = dk.dataset.dqcheck; $('#dqSearch').value = ''; renderDqIssues(); $('#dqIssuesCard').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); $('#dqCheck').focus({ preventScroll: true }); return; }
+    const ds = e.target.closest('[data-dqsort]'); if (ds) { const k = ds.dataset.dqsort; S.dqSort = { k, dir: S.dqSort.k === k ? -S.dqSort.dir : (k === 'a' ? 1 : k === 'n' ? -1 : 1) }; renderDqAgency(); $(`[data-dqsort="${k}"]`).focus(); return; }
+    const da = e.target.closest('tr[data-dqag]'); if (da) { S.agency = S.agency === da.dataset.dqag ? '' : da.dataset.dqag; $('#fAgency').value = S.agency; render(); $('#dqScore').scrollIntoView({ block: 'center' }); return; }
     const row = e.target.closest('tr.click'); if (row) { openProject(ALL.find(p => p.id == row.dataset.id)); return; }
     const so = e.target.closest('[data-sort]'); if (so) { const k = so.dataset.sort; flagSort = { k, dir: flagSort.k === k ? -flagSort.dir : -1 }; renderFlagTable(); }
   });
   document.addEventListener('keydown', e => { if (!(e.target instanceof Element)) { if (e.key === 'Escape' && S.view === 'project') closeProject(); return; }
     if (e.key === 'Escape' && S.view === 'project' && !e.target.closest('input, select')) closeProject();
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-dqag]')) { e.preventDefault(); e.target.click(); return; }
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr.click')) { e.preventDefault(); openProject(ALL.find(p => p.id == e.target.dataset.id)); }
   });
   $('#agMeasure').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.agMeasure = b.dataset.m; $$('#agMeasure button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderAgency(); });
   $('#grpSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.scGroup = b.dataset.g; $$('#grpSeg button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderScatters(); renderFlagTable(); });
+  $('#dqSearch').addEventListener('input', renderDqIssues); $('#dqCheck').addEventListener('change', e => { S.dqCheck = e.target.value; renderDqIssues(); });
+  $('#dqExport').addEventListener('click', () => {
+    const rows = dqIssueList().map(x => [x.p.id, x.p.name, x.p.agency, STATES[x.p.state], `${x.c.key}. ${x.c.title}`, x.ch.label, x.why, fmt2(x.ch.each)]);
+    const csv = [['Project ID', 'Project', 'Agency', 'State', 'Category', 'Check failed', 'What was found', 'Marks lost'], ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = `paimana-data-quality-${S.month}.csv`; a.click(); });
   $('#flagSearch').addEventListener('input', renderFlagTable); $('#flagType').addEventListener('change', () => { renderFlagTable(); syncChartSel(); });
   const map = $('#indiaMap');
   // hover outline is drawn on a separate overlay path so the hovered State is never moved in the DOM
@@ -1403,7 +1808,8 @@ function init() {
   });
   window.addEventListener('hashchange', () => setView());
   document.addEventListener('click', e => { const a = e.target.closest('a[href^="#"]'); if (!a) return; const v = a.getAttribute('href').slice(1);
-    if (!['overview', 'analytics', 'scrutiny'].includes(v)) return; e.preventDefault(); try { history.replaceState(null, '', '#' + v); } catch (er) {} setView(v);
+    if (!['overview', 'analytics', 'scrutiny', 'quality'].includes(v)) return; e.preventDefault(); try { history.replaceState(null, '', '#' + v); } catch (er) {} setView(v);
+    if (a.classList.contains('linkcard')) { $('#dashTabs').scrollIntoView({ block: 'start' }); $('#tab-' + v).focus({ preventScroll: true }); }
     $('#rail').classList.remove('open'); }, true);
   render(); setView();
 }

@@ -31,13 +31,26 @@ Page header: title · Flash Report month · data-as-of date · Export CSV
 Scope + filters: Under Implementation | Newly Added | Reported | Not Reported (with counts)
                  Agency · State/UT · Cost band · Revision status · active-filter chips · Reset
 Tabs:
- ├─ Overview: 6 KPIs → 2×2 chart pairs: Physical progress + Cost overview (stacked columns) · India State map + Agency bars · Time overrun + Cost overrun
+ ├─ Overview: 6 KPIs → summary pair (Early-warning overlap Venn → opens Performance Analytics; Data quality score → opens
+ │    Data Quality Assessment) → 2×2 chart pairs: Physical progress + Cost overview (stacked columns) · India State map + Agency bars · Time overrun + Cost overrun
  ├─ Performance Analytics (badge = flagged count): 3 metric groups → 3 early-warning scatter plots
  │    with Non-revised / Revised switch → flagged-projects table (search, filter, sort)
  │    Selecting a chart lists only the projects it flags (charts 1–2: lagging or lapsed; chart 3: misaligned),
  │    within that chart's group. The table's filter has the three chart names under "By chart" and stays in sync
  │    with the selected card; select the card again (or choose "All flags") to clear. Dots still open project details.
- └─ Data Scrutiny (badge = outlier count): rule summary → outlier table with failing cells highlighted
+ ├─ Data Scrutiny (badge = outlier count): rule summary → outlier table with failing cells highlighted
+ └─ Data Quality Assessment (badge = overall score out of 100): per "PAIMANA Data Quality Assessment Framework_05.11.2026"
+      1. Score card: ring with the overall score, grade, change vs last month; four category rows (score / 25, marks lost,
+         projects affected). Selecting a row opens that category below.
+      2. Score trend: overall score by Flash Report month, with dashed grade-band lines (table view available).
+      3. Marks by check: category switch (I–IV); each check shows what is checked, passed / applicable, compliance bar,
+         marks / allocated, and "View n projects". Category IV is grouped A / B / C with subtotals.
+         Checks with no applicable projects say "Not applicable" and show where their marks moved.
+      4. Projects that lost marks: one row per failed check, with what was found and the marks it cost; search,
+         category/check filter, CSV export. Rows open the project page, which also lists the project's data-quality issues.
+      5. Agency scorecard: every agency's I–IV and overall score, lowest first, sortable. Selecting an agency filters the page.
+      Scope: all projects under implementation in the current filters (agency, State, cost, revision). The
+      Reported / Not reported buttons don't apply, because reporting is itself scored. Projects under data scrutiny are included.
 Project page (full page, replaces the earlier side drawer): opens from any flagged-projects or data-scrutiny row,
   or any dot on the early-warning charts. Link: #project-<ID>. Back link and Esc return to the list at the same scroll position.
   Sections follow "project dashboard.docx", with the progress timeline moved up under the tiles:
@@ -60,6 +73,9 @@ Key changes from the current page:
 - **Two stacked columns** (vertical) replace the funnel. Both columns total the latest revised cost: *Approved cost* = original cost + cost escalation; *Spending* = expenditure + balance to spend. Segments are labelled with amount and share; a key strip below repeats the figures. (This replaced an earlier waterfall with a separate Revised cost bar.)
 - **Agency donut → ranked horizontal bars**, with a Projects / Revised cost / Expenditure switch. Agencies beyond the top 8 are grouped as "Others".
 - **India State map (choropleth) plus ranked list.** The map is embedded in the page (about 46 KB, no external requests). Hovering a State shows its project count and original cost; tapping on a phone shows the same details, and a second tap filters. Selecting a State filters the page, and keyboard users can tab through States. Boundaries follow India's official map: Ladakh includes Gilgit-Baltistan and Aksai Chin, and Jammu & Kashmir is shown in full. Source: open data from github.com/udit-001/india-maps-data, merged from districts to States. *Before go-live, have the boundaries checked against the Survey of India outline.*
+- **Overview summary cards** sit under the KPI tiles. Each whole card is a link to its tab, keyboard-focusable, and shows "Tab name →".
+  - *Early-warning overlap*: a three-set Venn of the projects flagged by the three early-warning charts (charts 1–2: lagging or lapsed; chart 3: misaligned), across revised and non-revised projects, excluding data-scrutiny cases. Each region shows a count, with the centre for all three. The legend lists each chart's total and "only in this chart". The union equals the Performance Analytics badge. The circles are a schematic, not drawn to scale, and the subtitle says so. A screen-reader summary gives the same figures.
+  - *Data quality score*: the ring, grade and change vs last month, the four category scores out of 25, and counts of projects that lost marks and issues to correct.
 - Every chart keeps its Chart/Table toggle. Tables use one format: `Original (**Revised**)`.
 
 ## 3. How the doc maps to the UI
@@ -82,7 +98,17 @@ Key changes from the current page:
 
 Each scatter plot also draws a y = x "on baseline" line, the 30-point threshold line with a shaded zone, the initiation band and a 100%-time marker. A reviewer can see why a dot is flagged without knowing the formula. Each metric card has a "How it is calculated" disclosure that quotes the formula.
 
-## 4. Ambiguities in the doc: assumptions to confirm with the client
+### Data Quality Assessment (framework of 05.11.2026)
+
+| Category (25 marks each) | Checks | Applicable projects | Passes when |
+|---|---|---|---|
+| I. Reporting consistency | Not reported · Consecutive non-reporting · Incomplete submission (25/3 each) | all · those that missed last month · those reported this month | reported · reported this month · no mandatory field blank |
+| II. Fixed fields | Sanction date · Original cost · Original DoC · Implementing agency · Project stage (5 each) | ongoing (not newly added) | the field was not changed |
+| III. Past values | Physical progress · Expenditure (12.5 each) | ongoing | no past month's value was changed |
+| IV. Data sanctity | A1 sanction date · A2 actual completion · B1 expenditure · B2 latest cost · C1 commissioning · C2 completion status · C3 progress range (groups A/B/C = 25/3 each, split equally inside the group) | A2: has an actual completion date · C1: original date passed and work incomplete · C2: 100% progress · others: all | all conditions of the composite check are met |
+
+Score per check = passed ÷ applicable × allocated marks; unrounded values are summed and rounded to 2 decimals only for display. A check with no applicable projects passes its marks to the other checks in its group (Category IV) or category (I–III); an empty group passes its marks to the other groups. The sample month gives 89.21 / 100 (I 24.11, II 24.18, III 21.94, IV 18.98); checked against a hand calculation of each check.
+
 
 1. **Lagging baseline** is described as "significant delta (<30 points)". Every other rule in the doc uses ">30". The prototype treats **≥ 30** as lagging.
 2. **"AND/OR"** in the 80-20 rule is read as **OR**.
@@ -92,6 +118,12 @@ Each scatter plot also draws a y = x "on baseline" line, the 30-point threshold 
 6. **Outlier thresholds** have no numbers in the doc. The prototype uses: expenditure > 200% of cost; revised commissioning before start; original span > 20 years. All three are configurable in `RULE`.
 7. **Outliers stay in Overview totals** so the totals match the Flash Report. They are excluded only from analytics.
 8. **Month-over-month deltas** need revision history per report. The sample data has static revisions, so the deltas read "no change"; with real monthly snapshots they will move.
+9. **Data Quality: Consecutive non-reporting** is measured among projects that missed last month (applicable), passing if they reported this month. This matches the doc's example where applicable (40) is smaller than the total (100).
+10. **Data Quality: Project stage "Making UI projects UD"**: the meaning of "UD" isn't defined in the doc; it is shown as "UI → UD" until confirmed.
+11. **Data Quality: C1 Commissioning schedule**: applicable when the original commissioning date has passed and progress is below 100%; passes when the latest (revised) date is today or later.
+12. **Data Quality: redistribution for Categories I–III** follows the Category IV rule (marks of an inapplicable check move to the others in the same category). The doc states the rule only for Category IV.
+13. **Data Quality: grade bands** (Excellent ≥ 90, Good ≥ 75, Needs improvement ≥ 60, Poor < 60) are proposed; the doc gives no bands.
+14. **Data Quality: sample facts.** Reporting history, mandatory-field gaps, edits to fixed fields and past values, sanction dates, actual completion dates and completion status are not in the Flash Report sample, so they are generated per project and month. Three projects were set to 100% physical progress so check C2 has cases.
 
 ## 5. Test and audit log
 
@@ -100,6 +132,8 @@ Functional (scripted in the browser):
 - All three doc outliers are caught with the correct reason (617989 at 8,908% of cost; 618106 revised date before start; 603293 with a 2056 date). None of them appears in any chart.
 - Scatter point counts equal the group selection for all three charts.
 - The agency filter, chips, Clear all, month switch, tab switching, legend toggles, table sorting and search, and the project page all work. Escape or Back returns from the project page to the list at the same scroll position.
+
+- Data Quality: category scores and the total match a hand calculation from the doc's formulas; the agency filter (NTPC: 88.47) matches its scorecard row; month switch, check filter, "View n projects", agency select/deselect, sorting, export and project-page return all work.
 
 Visual:
 - Checked at 1440 px light, 1440 px dark (theme switch), and 390 px phone width.
