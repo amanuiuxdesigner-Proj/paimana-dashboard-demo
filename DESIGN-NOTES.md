@@ -30,16 +30,18 @@ Nav rail (collapsible): Dashboard · Project Explorer · Review Cases · Log out
 Page header: title · Flash Report month · data-as-of date · Export CSV
 Scope + filters: Under Implementation | Newly Added | Reported | Not Reported (with counts)
                  Agency · State/UT · Cost band · Revision status · active-filter chips · Reset
-Tabs:
+One dashboard page (the tab bar is hidden). Inner pages open from the two Overview summary cards; each has
+"Back to Dashboard" (also Esc), which returns to the same scroll position with focus on the card. On an inner page the header
+shows that page's context (back link, breadcrumb, title, one-line description) in place of the dashboard title and Flash Report
+line; the month selector, Export CSV and filters stay.
  ├─ Overview: 6 KPIs → summary pair (Early-warning overlap Venn → opens Performance Analytics; Data quality score → opens
  │    Data Quality Assessment) → 2×2 chart pairs: Physical progress + Cost overview (stacked columns) · Time overrun + Cost overrun · India State map + Agency bars
- ├─ Performance Analytics (badge = flagged count): 3 metric groups → 3 early-warning scatter plots
+ ├─ Performance Analytics (inner page, from the Early-warning overlap card): 3 metric groups → 3 early-warning scatter plots
  │    with Non-revised / Revised switch → flagged-projects table (search, filter, sort)
  │    Selecting a chart lists only the projects it flags (charts 1–2: lagging or lapsed; chart 3: misaligned),
  │    within that chart's group. The table's filter has the three chart names under "By chart" and stays in sync
  │    with the selected card; select the card again (or choose "All flags") to clear. Dots still open project details.
- ├─ Data Scrutiny (badge = outlier count): rule summary → outlier table with failing cells highlighted
- └─ Data Quality Assessment (badge = overall score out of 100): per "PAIMANA Data Quality Assessment Framework_05.11.2026"
+ └─ Data Quality Assessment (inner page, from the Data quality score card): per "PAIMANA Data Quality Assessment Framework_05.11.2026"
       1. Score card: ring with the overall score, grade, change vs last month; four category rows (score / 25, marks lost,
          projects affected). Selecting a row opens that category below.
       2. Score trend: overall score by Flash Report month, with dashed grade-band lines (table view available).
@@ -49,6 +51,8 @@ Tabs:
       4. Projects that lost marks: one row per failed check, with what was found and the marks it cost; search,
          category/check filter, CSV export. Rows open the project page, which also lists the project's data-quality issues.
       5. Agency scorecard: every agency's I–IV and overall score, lowest first, sortable. Selecting an agency filters the page.
+      6. Data scrutiny (formerly its own tab), at the bottom: rule summary → outlier table with failing cells highlighted.
+         The "Review them" link on Performance Analytics jumps here; the Overview quality card shows the scrutiny count.
       Scope: all projects under implementation in the current filters (agency, State, cost, revision). The
       Reported / Not reported buttons don't apply, because reporting is itself scored. Projects under data scrutiny are included.
 Project page (full page, replaces the earlier side drawer): opens from any flagged-projects or data-scrutiny row,

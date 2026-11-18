@@ -293,6 +293,13 @@ td.bad{color:var(--crit-ink);font-weight:700;background:rgba(208,59,59,.07)}
 .pj-top .t{flex:1;min-width:260px}
 .backbtn{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font-weight:600;font-size:13px;cursor:pointer;padding:4px 0;margin-bottom:6px}
 .backbtn svg{width:16px;height:16px}
+/* inner pages (opened from the Overview cards) */
+#headSub .backbtn{margin-bottom:4px}
+#subTitle:focus{outline:none}
+.subdesc{margin:6px 0 0;color:var(--ink-3);font-size:13.5px;max-width:80ch}
+.scr-head{border-top:1px solid var(--line-2);padding-top:20px;margin-top:12px}
+.scr-head h2{display:flex;align-items:center;gap:10px}
+.scr-head:focus{outline:none}
 .pj-title:focus{outline:none}
 .pj-title{font-size:22px;line-height:1.3;margin:2px 0 6px;font-weight:700;text-wrap:balance;max-width:80ch}
 .pj-meta{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;color:var(--ink-2);font-size:13px}
@@ -572,12 +579,20 @@ tr.sel td{background:var(--accent-soft)}
     <div class="wrap">
       <div class="pagehead" id="dashHead">
         <div class="t">
+          <div id="headSub" hidden>
+            <button class="backbtn" data-back><svg class="i"><use href="#i-chev"/></svg>Back to Dashboard</button>
+            <div class="crumb" id="subCrumb"></div>
+            <h1 id="subTitle" tabindex="-1"></h1>
+            <p class="subdesc" id="subDesc"></p>
+          </div>
+          <div id="headDash">
           <div class="crumb">Dashboard / Line Ministry portfolio</div>
           <h1>Project Portfolio Dashboard</h1>
           <div class="meta">
             <span class="pill"><span class="dot"></span>Flash Report · <span id="frLabel">September 2026</span></span>
             <span>Data as of <b id="asOfLabel">30 Sep 2026</b> · refreshed monthly when the Flash Report is published</span>
             <span class="pill proto" title="This prototype runs on generated sample data">Prototype · sample data</span>
+          </div>
           </div>
         </div>
         <div class="actions">
@@ -608,7 +623,7 @@ tr.sel td{background:var(--accent-soft)}
         <div class="chips" id="chips" aria-live="polite"></div>
       </section>
 
-      <nav class="tabs" id="dashTabs" role="tablist" aria-label="Dashboard views">
+      <nav class="tabs" id="dashTabs" role="tablist" aria-label="Dashboard views" hidden>
         <a href="#overview" role="tab" id="tab-overview" aria-controls="view-overview">Overview</a>
         <a href="#analytics" role="tab" id="tab-analytics" aria-controls="view-analytics">Performance Analytics <span class="badge" id="flagBadge">0</span></a>
         <a href="#scrutiny" role="tab" id="tab-scrutiny" aria-controls="view-scrutiny">Data Scrutiny <span class="badge crit" id="outBadge">0</span></a>
@@ -616,7 +631,7 @@ tr.sel td{background:var(--accent-soft)}
       </nav>
 
       <!-- ================= OVERVIEW ================= -->
-      <section id="view-overview" role="tabpanel" aria-labelledby="tab-overview" class="grid" style="gap:16px">
+      <section id="view-overview" role="region" aria-label="Dashboard overview" class="grid" style="gap:16px">
         <div class="grid g-kpi" id="kpis"></div>
 
         <!-- Row 0: summaries that open the Performance Analytics and Data Quality tabs -->
@@ -696,7 +711,7 @@ tr.sel td{background:var(--accent-soft)}
       </section>
 
       <!-- ================= ANALYTICS ================= -->
-      <section id="view-analytics" role="tabpanel" aria-labelledby="tab-analytics" class="grid" hidden>
+      <section id="view-analytics" role="region" aria-labelledby="subTitle" class="grid" hidden>
         <div class="notice" id="exclNote"><svg class="i"><use href="#i-info"/></svg><div></div></div>
 
         <div class="sechead"><div class="t"><h2>Analytical metrics</h2><p>Objective scores for the portfolio. Change shown against the previous Flash Report.</p></div></div>
@@ -718,18 +733,8 @@ tr.sel td{background:var(--accent-soft)}
         </article>
       </section>
 
-      <!-- ================= SCRUTINY ================= -->
-      <section id="view-scrutiny" role="tabpanel" aria-labelledby="tab-scrutiny" class="grid" hidden>
-        <div class="notice warn"><svg class="i"><use href="#i-shield"/></svg><div><b>These projects are left out of every analytics chart and metric.</b> Their Flash Report values are impossible or extreme. Ask the implementing agency to correct them in the next monthly update; they return to the analytics automatically once the values pass the checks.</div></div>
-        <div class="grid g-3" id="ruleCards"></div>
-        <article class="card">
-          <div class="card-h"><div class="t"><h2>Projects under data scrutiny</h2><p>Highlighted cells failed a check</p></div></div>
-          <div class="card-b"><div class="tablewrap" style="max-height:none"><table id="outTable"></table></div></div>
-        </article>
-      </section>
-
       <!-- ================= DATA QUALITY ASSESSMENT ================= -->
-      <section id="view-quality" role="tabpanel" aria-labelledby="tab-quality" class="grid" hidden>
+      <section id="view-quality" role="region" aria-labelledby="subTitle" class="grid" hidden>
         <div class="notice" id="dqNote"><svg class="i"><use href="#i-info"/></svg><div></div></div>
         <div class="dq-hero">
           <article class="card dq-score" id="dqScore" aria-live="polite"></article>
@@ -770,6 +775,16 @@ tr.sel td{background:var(--accent-soft)}
         <article class="card">
           <div class="card-h"><div class="t"><h2>Agency scorecard</h2><p id="dqAgSub">Each implementing agency's score out of 100. Lowest first, so follow-up starts where it matters most. Select an agency to see its own assessment.</p></div></div>
           <div class="card-b"><div class="tablewrap" style="max-height:none"><table id="dqAgency"></table></div></div>
+        </article>
+
+        <!-- Data scrutiny (formerly its own tab) -->
+        <div class="sechead scr-head" id="dqScrutiny" tabindex="-1"><div class="t"><h2>Data scrutiny <span class="badge crit" id="scrBadge">0</span></h2>
+          <p>Projects whose Flash Report values are impossible or extreme. They are left out of the analytics charts and metrics until corrected.</p></div></div>
+        <div class="notice warn"><svg class="i"><use href="#i-shield"/></svg><div><b>These projects are left out of every analytics chart and metric.</b> Their Flash Report values are impossible or extreme. Ask the implementing agency to correct them in the next monthly update; they return to the analytics automatically once the values pass the checks.</div></div>
+        <div class="grid g-3" id="ruleCards"></div>
+        <article class="card">
+          <div class="card-h"><div class="t"><h2>Projects under data scrutiny</h2><p>Highlighted cells failed a check</p></div></div>
+          <div class="card-b"><div class="tablewrap" style="max-height:none"><table id="outTable"></table></div></div>
         </article>
       </section>
 
@@ -1201,7 +1216,7 @@ function renderWaterfall() {
 }
 function renderBadges() {
   $('#flagBadge').textContent = CUR.filter(p => !p.outlier && isFlagged(p)).length;
-  $('#outBadge').textContent = CUR.filter(p => p.outlier).length;
+  $('#outBadge').textContent = $('#scrBadge').textContent = CUR.filter(p => p.outlier).length;
 }
 const isFlagged = p => p.needRev || p.s1 === 'lapsed' || p.s2 === 'lapsed' || p.s1 === 'lag' || p.s2 === 'lag' || !p.aligned;
 
@@ -1562,9 +1577,9 @@ function renderOvInsights() {
         return `<li><span class="nb rn">${c.key}</span><span class="nm">${c.short}</span><span class="n num">${fmt2(c.score)}<span class="of"> / 25</span></span>
           <span class="meter" aria-hidden="true"><i style="width:${c.score / 25 * 100}%;background:var(${dqGrade(c.score * 4).col})"></i></span>
           <small>${lost < 0.005 ? 'Full marks' : `${fmt2(lost)} marks lost · ${n} project${n === 1 ? '' : 's'}`}</small></li>`; }).join('')}</ul>
-      <div class="vsum"><div><b class="num">${pn}</b><span>projects lost marks</span></div><div><b class="num">${issues}</b><span>issues to correct</span></div></div>
+      <div class="vsum"><div><b class="num">${pn}</b><span>projects lost marks</span></div><div><b class="num">${issues}</b><span>issues to correct</span></div><div><b class="num">${CUR.filter(p => p.outlier).length}</b><span>under data scrutiny</span></div></div>
     </div></div>
-  <p class="sr-only" id="ovDqSum">Overall data quality score ${fmt2(D.total)} out of 100, ${g.t}. ${D.cats.map(c => `${c.key}. ${c.short} ${fmt2(c.score)} of 25`).join('; ')}. ${pn} projects lost marks. Opens Data Quality Assessment.</p>`;
+  <p class="sr-only" id="ovDqSum">Overall data quality score ${fmt2(D.total)} out of 100, ${g.t}. ${D.cats.map(c => `${c.key}. ${c.short} ${fmt2(c.score)} of 25`).join('; ')}. ${pn} projects lost marks; ${CUR.filter(p => p.outlier).length} under data scrutiny. Opens Data Quality Assessment.</p>`;
 }
 
 /* ---------- Project page (full-page view; opens from any project row or dot) ----------
@@ -1637,8 +1652,8 @@ function renderProject(p) {
   host.innerHTML = `
     <div class="pj-top">
       <div class="t">
-        <button class="backbtn" id="pjBack"><svg class="i"><use href="#i-chev"/></svg>Back to ${S.prevView === 'scrutiny' ? 'Data Scrutiny' : S.prevView === 'overview' ? 'Overview' : S.prevView === 'quality' ? 'Data Quality Assessment' : 'flagged projects'}</button>
-        <div class="crumb">Dashboard / ${S.prevView === 'scrutiny' ? 'Data Scrutiny' : S.prevView === 'quality' ? 'Data Quality Assessment' : 'Performance Analytics'} / Project ${p.id}</div>
+        <button class="backbtn" id="pjBack"><svg class="i"><use href="#i-chev"/></svg>Back to ${S.prevView === 'overview' ? 'Dashboard' : S.prevView === 'quality' ? 'Data Quality Assessment' : 'Performance Analytics'}</button>
+        <div class="crumb">Dashboard / ${S.prevView === 'quality' ? 'Data Quality Assessment' : S.prevView === 'overview' ? 'Overview' : 'Performance Analytics'} / Project ${p.id}</div>
         <h1 class="pj-title" id="pjTitle" tabindex="-1">${esc(p.name)}</h1>
         <div class="pj-meta"><span class="num">ID ${p.id}</span><span>·</span><span>${esc(p.agency)}</span><span>·</span><span>${esc(STATES[p.state])}</span>
           <span class="pill">${p.revised ? 'Revised' : 'Not revised'}</span><span class="pill"><span class="dot" style="background:${p.reported ? 'var(--good)' : 'var(--warn)'}"></span>${p.reported ? 'Updated in this Flash Report' : 'Not reported this month'}</span></div>
@@ -1724,17 +1739,35 @@ function closeProject() {
    6. EVENTS
    ===================================================================== */
 function setView(force) {
-  const v = force || (location.hash || '#overview').slice(1);
+  let v = force || (location.hash || '#overview').slice(1);
+  if (v === 'scrutiny') v = 'quality';                      // data scrutiny now lives at the bottom of the Data Quality page
   const pm = /^project-(\d+)$/.exec(v), proj = pm && ALL.find(p => p.id === +pm[1]);
-  S.view = proj ? 'project' : ['overview', 'analytics', 'scrutiny', 'quality'].includes(v) ? v : 'overview';
+  if (S.view === 'overview') S.ovScroll = scrollY;
+  S.view = proj ? 'project' : ['overview', 'analytics', 'quality'].includes(v) ? v : 'overview';
   const onProject = S.view === 'project';
-  ['dashHead', 'dashToolbar', 'dashTabs'].forEach(id => { $('#' + id).hidden = onProject; });
+  ['dashHead', 'dashToolbar'].forEach(id => { $('#' + id).hidden = onProject; });
+  $('#dashTabs').hidden = true;                              // one dashboard page; inner pages open from the Overview cards
+  const PG = { analytics: ['Performance Analytics', 'Analytical metrics and early-warning charts for the projects in the current filters.'],
+    quality: ['Data Quality Assessment', 'How complete, stable and consistent the reported project data is, scored out of 100. Data scrutiny cases are listed at the bottom of this page.'] }[S.view];
+  $('#headDash').hidden = !!PG; $('#headSub').hidden = !PG;
+  if (PG) { $('#subCrumb').textContent = 'Dashboard / ' + PG[0]; $('#subTitle').textContent = PG[0]; $('#subDesc').textContent = PG[1]; }
   $('#view-project').hidden = !onProject;
-  ['overview', 'analytics', 'scrutiny', 'quality'].forEach(k => { $('#view-' + k).hidden = k !== S.view; $('#tab-' + k).setAttribute('aria-selected', k === S.view); });
-  if (!onProject) { const tb = $('#dashTabs'), ta = $('#tab-' + S.view); if (ta.offsetLeft < tb.scrollLeft || ta.offsetLeft + ta.offsetWidth > tb.scrollLeft + tb.clientWidth) tb.scrollLeft = ta.offsetLeft - 16; }  // keep the selected tab visible on phones
+  ['overview', 'analytics', 'quality'].forEach(k => { $('#view-' + k).hidden = k !== S.view; $('#tab-' + k).setAttribute('aria-selected', k === S.view); });
+  $('#rail a[href="#overview"]').setAttribute('aria-current', 'page');
   if (onProject) { currentProject = proj.id; renderProject(proj); scrollTo(0, 0); $('#pjTitle').focus({ preventScroll: true }); }
   else { ['pjDonutP', 'pjDonutF', 'pjLine'].forEach(id => { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }); $('#view-project').innerHTML = ''; }
   Object.values(charts).forEach(c => c.resize());
+}
+// Navigate between the dashboard and its inner pages, keeping the reader's place
+function goTo(v, opt = {}) {
+  const sub = v === 'scrutiny', page = sub ? 'quality' : v;
+  try { history.replaceState(null, '', '#' + page); } catch (e) {}
+  setView(page);
+  if (page === 'overview') {
+    requestAnimationFrame(() => { scrollTo(0, opt.restore ? (S.ovScroll || 0) : 0); if (opt.restore && S.lastCard) $('#' + S.lastCard)?.focus({ preventScroll: true }); });
+  } else {
+    requestAnimationFrame(() => { if (sub) $('#dqScrutiny').scrollIntoView({ block: 'start' }); else scrollTo(0, 0); (sub ? $('#dqScrutiny') : $('#subTitle')).focus({ preventScroll: true }); });
+  }
 }
 function init() {
   const ags = [...new Set(RAW.map(p => p.agency))].sort();
@@ -1771,6 +1804,7 @@ function init() {
   });
   document.addEventListener('keydown', e => { if (!(e.target instanceof Element)) { if (e.key === 'Escape' && S.view === 'project') closeProject(); return; }
     if (e.key === 'Escape' && S.view === 'project' && !e.target.closest('input, select')) closeProject();
+    else if (e.key === 'Escape' && (S.view === 'analytics' || S.view === 'quality') && !e.target.closest('input, select, details')) goTo('overview', { restore: true });
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-dqag]')) { e.preventDefault(); e.target.click(); return; }
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr.click')) { e.preventDefault(); openProject(ALL.find(p => p.id == e.target.dataset.id)); }
   });
@@ -1807,10 +1841,12 @@ function init() {
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = `paimana-portfolio-${S.month}.csv`; a.click();
   });
   window.addEventListener('hashchange', () => setView());
-  document.addEventListener('click', e => { const a = e.target.closest('a[href^="#"]'); if (!a) return; const v = a.getAttribute('href').slice(1);
-    if (!['overview', 'analytics', 'scrutiny', 'quality'].includes(v)) return; e.preventDefault(); try { history.replaceState(null, '', '#' + v); } catch (er) {} setView(v);
-    if (a.classList.contains('linkcard')) { $('#dashTabs').scrollIntoView({ block: 'start' }); $('#tab-' + v).focus({ preventScroll: true }); }
-    $('#rail').classList.remove('open'); }, true);
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-back]')) { goTo('overview', { restore: true }); return; }
+    const a = e.target.closest('a[href^="#"]'); if (!a) return; const v = a.getAttribute('href').slice(1);
+    if (!['overview', 'analytics', 'scrutiny', 'quality'].includes(v)) return; e.preventDefault();
+    if (a.classList.contains('linkcard')) S.lastCard = a.id;
+    goTo(v); $('#rail').classList.remove('open'); }, true);
   render(); setView();
 }
 init();
