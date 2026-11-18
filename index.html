@@ -651,7 +651,27 @@ tr.sel td{background:var(--accent-soft)}
           </article>
         </div>
 
-        <!-- Row 2: geography and agencies -->
+        <!-- Row 2: overruns -->
+        <div class="grid g-2">
+          <article class="card">
+            <div class="card-h"><div class="t"><h2>Time overrun</h2><p>Projects by schedule extension (years)</p></div>
+              <div class="toggle" data-for="to"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
+            <div class="card-b">
+              <div class="chartbox pair" data-chart="to"><canvas id="cTime" role="img" aria-label="Time overrun distribution"></canvas></div>
+              <div class="tablewrap" data-table="to" hidden></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-h"><div class="t"><h2>Cost overrun</h2><p>Projects by % increase over original cost</p></div>
+              <div class="toggle" data-for="co"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
+            <div class="card-b">
+              <div class="chartbox pair" data-chart="co"><canvas id="cCost" role="img" aria-label="Cost overrun distribution"></canvas></div>
+              <div class="tablewrap" data-table="co" hidden></div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Row 3: geography and agencies -->
         <div class="grid g-2">
           <article class="card">
             <div class="card-h"><div class="t"><h2>State-wise distribution</h2><p>Project count by State / UT. Hover for details, select to filter.</p></div>
@@ -670,26 +690,6 @@ tr.sel td{background:var(--accent-soft)}
               </div>
               <div class="chartbox pair-seg" data-chart="ag"><canvas id="cAgency" role="img" aria-label="Agency-wise bar chart"></canvas></div>
               <div class="tablewrap" data-table="ag" hidden></div>
-            </div>
-          </article>
-        </div>
-
-        <!-- Row 3: overruns -->
-        <div class="grid g-2">
-          <article class="card">
-            <div class="card-h"><div class="t"><h2>Time overrun</h2><p>Projects by schedule extension (years)</p></div>
-              <div class="toggle" data-for="to"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
-            <div class="card-b">
-              <div class="chartbox pair" data-chart="to"><canvas id="cTime" role="img" aria-label="Time overrun distribution"></canvas></div>
-              <div class="tablewrap" data-table="to" hidden></div>
-            </div>
-          </article>
-          <article class="card">
-            <div class="card-h"><div class="t"><h2>Cost overrun</h2><p>Projects by % increase over original cost</p></div>
-              <div class="toggle" data-for="co"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
-            <div class="card-b">
-              <div class="chartbox pair" data-chart="co"><canvas id="cCost" role="img" aria-label="Cost overrun distribution"></canvas></div>
-              <div class="tablewrap" data-table="co" hidden></div>
             </div>
           </article>
         </div>

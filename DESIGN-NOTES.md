@@ -32,7 +32,7 @@ Scope + filters: Under Implementation | Newly Added | Reported | Not Reported (w
                  Agency · State/UT · Cost band · Revision status · active-filter chips · Reset
 Tabs:
  ├─ Overview: 6 KPIs → summary pair (Early-warning overlap Venn → opens Performance Analytics; Data quality score → opens
- │    Data Quality Assessment) → 2×2 chart pairs: Physical progress + Cost overview (stacked columns) · India State map + Agency bars · Time overrun + Cost overrun
+ │    Data Quality Assessment) → 2×2 chart pairs: Physical progress + Cost overview (stacked columns) · Time overrun + Cost overrun · India State map + Agency bars
  ├─ Performance Analytics (badge = flagged count): 3 metric groups → 3 early-warning scatter plots
  │    with Non-revised / Revised switch → flagged-projects table (search, filter, sort)
  │    Selecting a chart lists only the projects it flags (charts 1–2: lagging or lapsed; chart 3: misaligned),
