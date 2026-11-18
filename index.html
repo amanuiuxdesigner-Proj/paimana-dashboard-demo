@@ -645,7 +645,7 @@ tr.sel td{background:var(--accent-soft)}
             <div class="card-h"><div class="t"><h2>Cost overview</h2><p>What the portfolio now costs, and how much of it has been spent (₹ crore)</p></div>
               <div class="toggle" data-for="wf"><button aria-pressed="true" data-v="chart">Chart</button><button aria-pressed="false" data-v="table">Table</button></div></div>
             <div class="card-b">
-              <div data-chart="wf"><div class="chartbox" style="height:300px"><canvas id="cWaterfall" role="img" aria-label="Stacked columns: approved cost split into original cost and escalation; spending split into expenditure and balance to spend"></canvas></div><div class="costkey" id="costKey"></div></div>
+              <div data-chart="wf"><div class="chartbox" style="height:300px"><canvas id="cWaterfall" role="img" aria-label="Stacked columns: total revised cost split into original cost and escalation; spending split into expenditure and balance to spend"></canvas></div><div class="costkey" id="costKey"></div></div>
               <div class="tablewrap" data-table="wf" hidden></div>
             </div>
           </article>
@@ -1187,15 +1187,15 @@ function renderWaterfall() {
   o.layout = { padding: { top: 8 } };
   o.scales = { y: { stacked: true, beginAtZero: true, max: Math.ceil(rev * 1.22 / 1e5) * 1e5, grid: gridOpts(), border: { display: false }, ticks: { maxTicksLimit: 6, callback: v => (v / 1e5).toLocaleString('en-IN') + 'L cr' } },
     x: { stacked: true, grid: { display: false }, border: { display: false }, ticks: { color: cv('--ink'), font: { weight: '700', size: 12.5 }, padding: 6,
-      callback: (v, i) => i === 0 ? ['Approved cost', fmtCr(rev) + ' cr'] : ['Spending', pct(exp, rev) + ' spent'] } } };
+      callback: (v, i) => i === 0 ? ['Total revised cost', fmtCr(rev) + ' cr'] : ['Spending', pct(exp, rev) + ' spent'] } } };
   // inside a segment: amount + share; the thin escalation segment (label above the column) gets the short note
   o.plugins.segLabels = { on: true, text: di => narrow() ? [SEG[di][3].replace(/ cr$/, ''), SEG[di][4].split(' ')[0]] : di === 1 ? [SEG[di][3], SEG[di][4].split(' ')[0]] : [SEG[di][3], SEG[di][4]] };
-  o.plugins.tooltip.callbacks = { title: c => c[0].dataIndex === 0 ? `Approved cost · ${fmtCr(rev)} cr` : `Spending · ${fmtCr(rev)} cr`, label: c => `${SEG[c.datasetIndex][0]}: ${SEG[c.datasetIndex][3]} (${SEG[c.datasetIndex][4]})` };
+  o.plugins.tooltip.callbacks = { title: c => c[0].dataIndex === 0 ? `Total revised cost · ${fmtCr(rev)} cr` : `Spending · ${fmtCr(rev)} cr`, label: c => `${SEG[c.datasetIndex][0]}: ${SEG[c.datasetIndex][3]} (${SEG[c.datasetIndex][4]})` };
   const ds = SEG.map(([label, data, col], i) => ({ label, data, backgroundColor: col, borderColor: cv('--surface'), borderWidth: { top: i % 2 ? 0 : 2 }, borderSkipped: false,
     borderRadius: { topLeft: i % 2 ? 6 : 0, topRight: i % 2 ? 6 : 0, bottomLeft: i % 2 ? 0 : 6, bottomRight: i % 2 ? 0 : 6 }, barPercentage: .72, categoryPercentage: .8, maxBarThickness: 150 }));
-  mkChart('cWaterfall', { type: 'bar', data: { labels: ['Approved cost', 'Spending'], datasets: ds }, options: o });
+  mkChart('cWaterfall', { type: 'bar', data: { labels: ['Total revised cost', 'Spending'], datasets: ds }, options: o });
   const item = ([label, , col, val, note]) => `<div class="it"><span class="sw" style="background:${col}"></span><span class="lb">${label}</span><span class="vl">${val}<small>${note}</small></span></div>`;
-  $('#costKey').innerHTML = `<div class="grp"><div class="gh">Approved cost</div>${item(SEG[0])}${item(SEG[1])}</div><div class="grp"><div class="gh">Spending</div>${item(SEG[2])}${item(SEG[3])}</div>`;
+  $('#costKey').innerHTML = `<div class="grp"><div class="gh">Total revised cost</div>${item(SEG[0])}${item(SEG[1])}</div><div class="grp"><div class="gh">Spending</div>${item(SEG[2])}${item(SEG[3])}</div>`;
   tableInto('wf', ['Component', 'Amount (₹ cr)', 'Share'], [['Original cost', fmtInt(orig), pct(orig, rev) + ' of revised'], ['Cost escalation', fmtInt(esc_), '+' + pct(esc_, orig) + ' over original'],
     ['Revised cost (total of both columns)', fmtInt(rev), '100%'], ['Expenditure', fmtInt(exp), pct(exp, rev) + ' of revised'], ['Balance to spend', fmtInt(bal), pct(bal, rev) + ' of revised']], [1]);
 }
