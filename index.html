@@ -1308,19 +1308,19 @@ function renderMetrics() {
     </div>
     ${how('Slippage = (Revised + Need revision) ÷ Total active × 100', '<p style="margin:4px 0 0">A non-revised project <b>needs revision</b> when time elapsed &gt; 80% and physical progress or expenditure &lt; 20% (80-20 rule). Quantum of increase = Σ(revised − original) ÷ Σ original, over revised projects only. Multiple revisions use total projects as the base.</p>')}
   </article>
-  <article class="card metric"><div class="eyebrow">Project execution</div><h3>Execution performance rate</h3>
-    <div class="big"><b class="num">${fmt1(m.exec)}%</b>${delta(m.exec, pm.exec, true, ' pts')}</div>
-    <div class="frac num">${m.onTrack} on track, of ${m.pastInit} non-revised projects past initiation</div>
-    <div class="meter" aria-hidden="true"><i style="width:${m.exec || 0}%;background:var(--good)"></i></div>
-    <div class="dir">Momentum of projects still on their original baseline. Higher is better.</div>
-    ${how('Execution = Non-revised on track ÷ Non-revised past initiation × 100', '<p style="margin:4px 0 0">On track: time elapsed − physical progress &lt; 30. Revised projects and projects with ≤25% time elapsed are excluded.</p>')}
-  </article>
   <article class="card metric"><div class="eyebrow">Monitoring &amp; administration</div><h3>Administrative lag rate</h3>
     <div class="big"><b class="num">${fmt1(m.lag)}%</b>${delta(m.lag, pm.lag, false, ' pts')}</div>
     <div class="frac num">${m.need} needing revision, of ${m.revised + m.need} revised or due</div>
     <div class="meter" aria-hidden="true"><i style="width:${m.lag || 0}%;background:var(--warn)"></i></div>
     <div class="dir">Revisions that are due but not yet processed. Lower is better.</div>
     ${how('Lag = Need revision ÷ (Revised + Need revision) × 100', '<p style="margin:4px 0 0">Measures the administrative delay in processing project revisions.</p>')}
+  </article>
+  <article class="card metric"><div class="eyebrow">Project execution</div><h3>Execution performance rate</h3>
+    <div class="big"><b class="num">${fmt1(m.exec)}%</b>${delta(m.exec, pm.exec, true, ' pts')}</div>
+    <div class="frac num">${m.onTrack} on track, of ${m.pastInit} non-revised projects past initiation</div>
+    <div class="meter" aria-hidden="true"><i style="width:${m.exec || 0}%;background:var(--good)"></i></div>
+    <div class="dir">Momentum of projects still on their original baseline. Higher is better.</div>
+    ${how('Execution = Non-revised on track ÷ Non-revised past initiation × 100', '<p style="margin:4px 0 0">On track: time elapsed − physical progress &lt; 30. Revised projects and projects with ≤25% time elapsed are excluded.</p>')}
   </article>`;
 }
 
