@@ -779,8 +779,8 @@ tr.sel td{background:var(--accent-soft)}
 
         <!-- Data scrutiny (formerly its own tab) -->
         <div class="sechead scr-head" id="dqScrutiny" tabindex="-1"><div class="t"><h2>Data scrutiny <span class="badge crit" id="scrBadge">0</span></h2>
-          <p>Projects whose Flash Report values are impossible or extreme. They are left out of the analytics charts and metrics until corrected.</p></div></div>
-        <div class="notice warn"><svg class="i"><use href="#i-shield"/></svg><div><b>These projects are left out of every analytics chart and metric.</b> Their Flash Report values are impossible or extreme. Ask the implementing agency to correct them in the next monthly update; they return to the analytics automatically once the values pass the checks.</div></div>
+          <p>Projects with implausible or out-of-range values in the Flash Report, excluded from analytics until corrected.</p></div></div>
+        <div class="notice warn"><svg class="i"><use href="#i-shield"/></svg><div><b>These projects are excluded from all analytics charts and metrics.</b> Their reported Flash Report values are implausible or out of range. The implementing agency should correct them in the next monthly submission. The projects will be reinstated in the analytics automatically once they pass validation.</div></div>
         <div class="grid g-3" id="ruleCards"></div>
         <article class="card">
           <div class="card-h"><div class="t"><h2>Projects under data scrutiny</h2><p>Highlighted cells failed a check</p></div></div>
@@ -989,12 +989,14 @@ function dqFacts(p, month) {
 const DQ = [
   { key: 'I', title: 'Consistency of project status reporting', short: 'Reporting consistency',
     desc: 'Is every project reported on time each month, with all mandatory fields filled?',
+    lead: 'Timeliness and completeness of monthly project reporting',
     groups: [{ checks: [
       { id: 'nr', label: 'Not reported', desc: 'Projects not reported for the month', app: () => true, pass: (p, f) => f.reported, why: () => 'Not reported for this month' },
       { id: 'cnr', label: 'Consecutive non-reporting', desc: 'Projects not reported for two or more consecutive months (checked among projects that missed last month)', app: (p, f) => f.missedPrev, pass: (p, f) => f.reported, why: () => 'Not reported for this month or last month' },
       { id: 'inc', label: 'Incomplete monthly submission', desc: 'Reported projects with mandatory monthly fields left blank', app: (p, f) => f.reported, pass: (p, f) => !f.blank.length, why: (p, f) => 'Left blank: ' + f.blank.join(', ') }] }] },
   { key: 'II', title: 'Update of fixed (static) fields', short: 'Fixed fields',
     desc: 'Have baseline particulars that should stay stable been changed for ongoing projects?',
+    lead: 'Consistency of baseline details for ongoing projects',
     groups: [{ checks: [
       ['sanction', 'Sanction date', 'Sanction date of an ongoing project updated'],
       ['cost', 'Original cost', 'Original cost of an ongoing project updated'],
@@ -1004,12 +1006,14 @@ const DQ = [
         ({ id: k, label, desc, app: p => !p.newly, pass: (p, f) => !f.fixed[k], why: (p, f) => f.fixed[k] })) }] },
   { key: 'III', title: 'Update of past values of dynamic fields', short: 'Past values',
     desc: 'Have previously reported monthly values been changed after the month closed?',
+    lead: 'Consistency of previously reported monthly values',
     groups: [{ checks: [
       ['phys', 'Physical progress', 'Physical progress of an ongoing project updated for a past month'],
       ['exp', 'Expenditure', 'Expenditure of an ongoing project updated for a past month']].map(([k, label, desc]) =>
         ({ id: k, label, desc, app: p => !p.newly, pass: (p, f) => !f.past[k], why: (p, f) => f.past[k] })) }] },
   { key: 'IV', title: 'Data inconsistency / sanctity issues', short: 'Data sanctity',
     desc: 'Are dates, costs, expenditure, progress and status consistent with each other?',
+    lead: 'Internal consistency of key project parameters',
     groups: [
       { key: 'A', title: 'Date and timeline inconsistencies', checks: [
         { id: 'a1', label: 'Sanction date validity and chronology', desc: 'Sanction date is entered and is not later than the start date or the commissioning date', app: () => true, pass: (p, f) => !f.a1.length, why: (p, f) => f.a1.join('; ') },
@@ -1493,7 +1497,7 @@ function renderDqDetail() {
   const c = DQR.cats.find(k => k.key === S.dqCat);
   $('#dqCatSeg').innerHTML = DQR.cats.map(k => `<button data-dqcat="${k.key}" aria-pressed="${k.key === S.dqCat}">${k.key}. ${k.short} <span class="c num">${fmt1(k.score)}</span></button>`).join('');
   $('#dqDetailTitle').textContent = `${c.key}. ${c.title}`;
-  $('#dqDetailSub').textContent = `${c.desc} ${fmt2(c.score)} of 25 marks.`;
+  $('#dqDetailSub').textContent = c.lead ? `${c.lead} · ${fmt2(c.score)} / 25 marks` : `${c.desc} ${fmt2(c.score)} of 25 marks.`;
   const row = ch => {
     const na = !ch.applicable, pct = na ? 0 : ch.passed / ch.applicable * 100, moved = !na && Math.abs(ch.max - ch.base) > 1e-9;
     return `<tr><td style="white-space:normal;min-width:180px"><b>${ch.label}</b><div class="dsub">${ch.desc}</div></td><td class="desc">${ch.desc}</td>
@@ -1748,7 +1752,7 @@ function setView(force) {
   ['dashHead', 'dashToolbar'].forEach(id => { $('#' + id).hidden = onProject; });
   $('#dashTabs').hidden = true;                              // one dashboard page; inner pages open from the Overview cards
   const PG = { analytics: ['Performance Analytics', 'Analytical metrics and early-warning charts for the projects in the current filters.'],
-    quality: ['Data Quality Assessment', 'How complete, stable and consistent the reported project data is, scored out of 100. Data scrutiny cases are listed at the bottom of this page.'] }[S.view];
+    quality: ['Data Quality Assessment', 'Assessment of the completeness, consistency and reliability of reported project data, scored out of 100. Projects under data scrutiny are listed at the end of this page.'] }[S.view];
   $('#headDash').hidden = !!PG; $('#headSub').hidden = !PG;
   if (PG) { $('#subCrumb').textContent = 'Dashboard / ' + PG[0]; $('#subTitle').textContent = PG[0]; $('#subDesc').textContent = PG[1]; }
   $('#view-project').hidden = !onProject;
