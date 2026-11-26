@@ -107,7 +107,7 @@ Each scatter plot also draws a y = x "on baseline" line, the 30-point threshold 
 | Category (25 marks each) | Checks | Applicable projects | Passes when |
 |---|---|---|---|
 | I. Reporting consistency | Not reported · Consecutive non-reporting · Incomplete submission (25/3 each) | all · those that missed last month · those reported this month | reported · reported this month · no mandatory field blank |
-| II. Fixed fields | Sanction date · Original cost · Original DoC · Implementing agency · Project stage (5 each) | ongoing (not newly added) | the field was not changed |
+| II. Project Profile | Sanction date · Original cost · Original DoC · Implementing agency · Project stage (5 each) | ongoing (not newly added) | the field was not changed |
 | III. Past values | Physical progress · Expenditure (12.5 each) | ongoing | no past month's value was changed |
 | IV. Data sanctity | A1 sanction date · A2 actual completion · B1 expenditure · B2 latest cost · C1 commissioning · C2 completion status · C3 progress range (groups A/B/C = 25/3 each, split equally inside the group) | A2: has an actual completion date · C1: original date passed and work incomplete · C2: 100% progress · others: all | all conditions of the composite check are met |
 

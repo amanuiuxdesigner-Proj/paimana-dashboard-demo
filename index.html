@@ -148,10 +148,12 @@ select:hover{border-color:var(--accent)}
 /* ---------- view tabs ---------- */
 .tabs{position:relative;display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
 .tabs a{display:flex;align-items:center;gap:8px;padding:10px 14px;text-decoration:none;color:var(--ink-2);font-weight:600;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
-.tabs a:hover{color:var(--ink)}
-.tabs a[aria-selected="true"]{color:var(--brand);border-bottom-color:var(--saffron)}
-:root[data-theme="dark"] .tabs a[aria-selected="true"]{color:var(--ink)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tabs a[aria-selected="true"]{color:var(--ink)}}
+.tabs button{display:flex;align-items:center;gap:8px;padding:10px 14px;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;font:inherit;font-weight:600;color:var(--ink-2);white-space:nowrap;cursor:pointer}
+@media (max-width:640px){#ovTabs button{flex:1 1 0;white-space:normal;text-align:left;align-items:flex-end;line-height:1.3}}
+.tabs a:hover,.tabs button:hover{color:var(--ink)}
+.tabs a[aria-selected="true"],.tabs button[aria-selected="true"]{color:var(--brand);border-bottom-color:var(--saffron)}
+:root[data-theme="dark"] .tabs a[aria-selected="true"],:root[data-theme="dark"] .tabs button[aria-selected="true"]{color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tabs a[aria-selected="true"],:root:not([data-theme="light"]) .tabs button[aria-selected="true"]{color:var(--ink)}}
 .badge{font-size:11px;font-weight:700;min-width:20px;height:20px;padding:0 6px;border-radius:999px;display:inline-grid;place-items:center;background:var(--line);color:var(--ink-2)}
 .badge.crit{background:var(--crit);color:#fff}
 
@@ -278,6 +280,9 @@ details.how code{display:block;background:var(--surface-2);border:1px solid var(
 /* flags */
 .flag{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:999px;margin:1px 4px 1px 0;white-space:nowrap}
 .flag.crit{background:rgba(208,59,59,.12);color:var(--crit-ink)}
+/* Data Quality check table: projects with issues, out of applicable projects */
+.iss{font-weight:600;color:var(--ink-3)}
+.iss.has{display:inline-block;min-width:22px;padding:1px 7px;border-radius:999px;background:rgba(208,59,59,.12);color:var(--crit-ink);font-weight:700;text-align:center}
 .flag.warn{background:rgba(250,178,25,.2);color:var(--warn-ink)}
 .flag.ser{background:rgba(236,131,90,.16);color:var(--crit-ink)}
 .flag.info{background:var(--accent-soft);color:var(--accent)}
@@ -380,13 +385,16 @@ footer{color:var(--ink-3);font-size:12px;text-align:center;padding-top:16px}
 
 /* ---------- responsive ---------- */
 /* ---------- Overview: summary cards that open a tab ---------- */
-a.linkcard{text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s}
-a.linkcard:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(10,51,114,.10)}
+.linkcard{text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s}
+article.linkcard{cursor:pointer}
+.linkcard .go{text-decoration:none}
+.linkcard .go:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.linkcard:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(10,51,114,.10)}
 a.linkcard:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .linkcard .go{font-size:12.5px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:4px;white-space:nowrap;padding-top:2px}
 .linkcard:hover .go span{transform:translateX(2px)} .linkcard .go span{transition:transform .15s}
-a.linkcard{container-type:inline-size}
-a.linkcard .card-h{padding:20px 24px 4px} a.linkcard .card-b{padding:16px 24px 24px;display:flex;flex-direction:column;justify-content:flex-start}
+.linkcard{container-type:inline-size}
+.linkcard .card-h{padding:20px 24px 4px} .linkcard .card-b{padding:16px 24px 24px;display:flex;flex-direction:column;justify-content:flex-start}
 .venn-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
 .venn-note{margin:8px 0 0;text-align:center;font-size:11.5px;color:var(--ink-3)}
 .venn{width:100%;height:auto;max-height:230px;display:block;margin:0 auto}
@@ -395,10 +403,36 @@ a.linkcard .card-h{padding:20px 24px 4px} a.linkcard .card-b{padding:16px 24px 2
 .vlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
 .vlist li{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:4px 10px;align-items:center;font-size:13px}
 .vlist .nb{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700}
-.vlist .nm{font-weight:600;color:var(--ink)} .vlist .n{font-weight:700;font-size:14px;text-align:right}
+.vlist .nm{font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px;min-width:0} .vlist .n{font-weight:700;font-size:14px;text-align:right}
 .vlist small{grid-column:2/-1;color:var(--ink-3);font-size:11.5px}
 .vsum{display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px;margin-top:6px}
 .vsum div{flex:1;min-width:90px}
+/* Analytical metric strip at the top of the early-warning overlap card */
+.ovm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;margin-bottom:24px}
+.ovm>div{padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ovm>div+div{border-left:1px solid var(--line)}
+.ovm .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.ovm h3{margin:0;font-size:14px;line-height:1.3}
+.ovm .val{font-size:28px;line-height:1;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+.ovm .chg{font-size:12px;line-height:1.35}
+.ovm h3{display:flex;align-items:center;gap:6px}
+/* "How it is calculated" tooltip: opens on hover, keyboard focus or click; Esc or a click elsewhere closes it */
+.mtip{position:relative;display:inline-flex}
+.mtip>button{display:inline-grid;place-items:center;width:22px;height:22px;padding:0;border:0;border-radius:50%;background:none;color:var(--accent);cursor:pointer}
+.mtip>button:hover,.mtip.open>button{background:var(--surface-2)}
+.mtip>button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.mtip>button .i{width:16px;height:16px}
+.mtip-pop{display:none;position:absolute;z-index:30;top:calc(100% + 8px);left:-12px;width:300px;max-width:calc(100vw - 48px);padding:12px 14px;background:var(--surface);border:1px solid var(--line-2);border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,.18);font-size:12.5px;font-weight:400;line-height:1.5;color:var(--ink-2);text-transform:none;letter-spacing:0;text-align:left;white-space:normal;cursor:auto}
+.mtip-pop b.t{display:block;color:var(--ink);font-size:12.5px;margin-bottom:6px}
+.mtip-pop code{display:block;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:0 0 8px;font-size:12px;white-space:normal;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--ink)}
+.mtip-pop .mn{display:block}
+.ovm>div:last-child .mtip-pop{left:auto;right:-12px}
+.mtip:hover .mtip-pop,.mtip:focus-within .mtip-pop,.mtip.open .mtip-pop{display:block}
+.mtip.shut .mtip-pop{display:none}
+.dqnote .mtip{order:3}
+.dqnote .mtip-pop{left:50%;transform:translateX(-50%)}
+@container (max-width:520px){.ovm h3,.vlist li,.dqvis{position:relative}.mtip{position:static}.mtip-pop,.ovm>div:last-child .mtip-pop,.dqnote .mtip-pop{left:0;right:0;width:auto;max-width:none;transform:none}}
+@container (max-width:520px){.ovm{grid-template-columns:1fr}.ovm>div+div{border-left:0;border-top:1px solid var(--line)}}
 .vsum b{display:block;font-size:22px;line-height:1.1;margin-bottom:4px}
 .vsum span{font-size:12px;line-height:1.4;color:var(--ink-3);display:block}
 .dqvis{display:flex;flex-direction:column;align-items:center}
@@ -409,8 +443,9 @@ a.linkcard .card-h{padding:20px 24px 4px} a.linkcard .card-b{padding:16px 24px 2
 .vlist .n .of{font-size:12px;font-weight:600;color:var(--ink-3)}
 /* the cards rearrange by their own width, so they stay roomy at every screen size */
 @container (max-width:620px){.venn-wrap{grid-template-columns:1fr;gap:24px}.venn{max-height:240px}}
+@container (min-width:900px){.venn{max-height:280px}.dqvis .dq-ring{width:200px;height:200px}}
 @container (max-width:460px){.linkcard .card-h{flex-wrap:wrap}.linkcard .go{order:3;width:100%}}
-@media (max-width:640px){a.linkcard .card-h{padding:16px 16px 4px} a.linkcard .card-b{padding:12px 16px 18px}}
+@media (max-width:640px){.linkcard .card-h{padding:16px 16px 4px} .linkcard .card-b{padding:12px 16px 18px}}
 /* ---------- Data Quality Assessment ---------- */
 .dq-hero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px}
 .dq-score{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;padding:18px 20px;align-items:start}
@@ -435,6 +470,13 @@ a.linkcard .card-h{padding:20px 24px 4px} a.linkcard .card-b{padding:16px 24px 2
 .catrow[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent);background:var(--accent-soft)}
 .catrow .rn{grid-area:rn;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--ink-2)}
 .catrow .nm{grid-area:nm;font-size:13px;font-weight:600;min-width:0}
+.catli{position:relative}
+.catrow .tipslot{display:inline-block;width:22px;height:1px;margin-left:6px;vertical-align:middle}
+.catli>.mtip{position:absolute;left:0;top:0;z-index:2}
+.catli>.mtip .mtip-pop{left:-12px}
+.dq-gradeline{display:inline-flex;align-items:center;gap:6px}
+/* phones: these popovers open as a panel along the bottom of the screen so they never run off the edge */
+@media (max-width:640px){.catli>.mtip .mtip-pop,.dq-gradeline .mtip-pop{position:fixed;left:16px;right:16px;top:auto;bottom:16px;width:auto;max-width:none;transform:none}}
 .catrow .sc{grid-area:sc;font-size:12.5px;color:var(--ink-3);white-space:nowrap}
 .catrow .sc b{font-size:15px;color:var(--ink)}
 .catrow .meter{grid-area:mt}
@@ -632,19 +674,28 @@ tr.sel td{background:var(--accent-soft)}
 
       <!-- ================= OVERVIEW ================= -->
       <section id="view-overview" role="region" aria-label="Dashboard overview" class="grid" style="gap:16px">
-        <div class="grid g-kpi" id="kpis"></div>
-
-        <!-- Row 0: summaries that open the Performance Analytics and Data Quality tabs -->
-        <div class="grid g-2">
-          <a class="card linkcard" href="#analytics" id="ovWarn" aria-describedby="ovWarnSum">
-            <div class="card-h"><div class="t"><h2>Overlap across early-warning indicators</h2><p>Projects flagged by each indicator, individually and in combination</p></div><span class="go">Performance Analytics <span aria-hidden="true">→</span></span></div>
-            <div class="card-b" id="ovWarnBody"></div>
-          </a>
-          <a class="card linkcard" href="#quality" id="ovDq" aria-describedby="ovDqSum">
-            <div class="card-h"><div class="t"><h2>Data quality score</h2><p id="ovDqSub">PAIMANA data quality assessment, out of 100</p></div><span class="go">Data Quality Assessment <span aria-hidden="true">→</span></span></div>
-            <div class="card-b" id="ovDqBody"></div>
-          </a>
+        <div class="tabs" role="tablist" aria-label="Dashboard sections" id="ovTabs">
+          <button type="button" role="tab" id="ovtab-pa" aria-controls="ovpanel-pa" aria-selected="true">Performance &amp; Data Insights</button>
+          <button type="button" role="tab" id="ovtab-pd" aria-controls="ovpanel-pd" aria-selected="false" tabindex="-1">Project Details Overview</button>
         </div>
+
+        <!-- Tab 1: summaries that open the Performance Analytics and Data Quality pages -->
+        <div id="ovpanel-pa" role="tabpanel" aria-labelledby="ovtab-pa" class="grid" style="gap:16px">
+        <div class="grid">
+          <article class="card linkcard" id="ovWarn" data-href="#analytics">
+            <div class="card-h"><div class="t"><h2>Overlap across early-warning indicators</h2><p>Projects flagged by each indicator, individually and in combination</p></div><a class="go" href="#analytics" id="ovWarnLink" aria-describedby="ovWarnSum">Performance Analytics <span aria-hidden="true">→</span></a></div>
+            <div class="card-b" id="ovWarnBody"></div>
+          </article>
+          <article class="card linkcard" id="ovDq" data-href="#quality">
+            <div class="card-h"><div class="t"><h2>Data quality score</h2><p id="ovDqSub">PAIMANA data quality assessment, out of 100</p></div><a class="go" href="#quality" id="ovDqLink" aria-describedby="ovDqSum">Data Quality Assessment <span aria-hidden="true">→</span></a></div>
+            <div class="card-b" id="ovDqBody"></div>
+          </article>
+        </div>
+        </div>
+
+        <!-- Tab 2: project details -->
+        <div id="ovpanel-pd" role="tabpanel" aria-labelledby="ovtab-pd" class="grid" style="gap:16px" hidden>
+        <div class="grid g-kpi" id="kpis"></div>
 
         <!-- Row 1: progress and cost -->
         <div class="grid g-2">
@@ -707,6 +758,7 @@ tr.sel td{background:var(--accent-soft)}
               <div class="tablewrap" data-table="ag" hidden></div>
             </div>
           </article>
+        </div>
         </div>
       </section>
 
@@ -994,7 +1046,7 @@ const DQ = [
       { id: 'nr', label: 'Not reported', desc: 'Projects not reported for the month', app: () => true, pass: (p, f) => f.reported, why: () => 'Not reported for this month' },
       { id: 'cnr', label: 'Consecutive non-reporting', desc: 'Projects not reported for two or more consecutive months (checked among projects that missed last month)', app: (p, f) => f.missedPrev, pass: (p, f) => f.reported, why: () => 'Not reported for this month or last month' },
       { id: 'inc', label: 'Incomplete monthly submission', desc: 'Reported projects with mandatory monthly fields left blank', app: (p, f) => f.reported, pass: (p, f) => !f.blank.length, why: (p, f) => 'Left blank: ' + f.blank.join(', ') }] }] },
-  { key: 'II', title: 'Update of fixed (static) fields', short: 'Fixed fields',
+  { key: 'II', title: 'Update of fixed (static) fields', short: 'Project Profile',
     desc: 'Have baseline particulars that should stay stable been changed for ongoing projects?',
     lead: 'Consistency of baseline details for ongoing projects',
     groups: [{ checks: [
@@ -1008,7 +1060,7 @@ const DQ = [
     desc: 'Have previously reported monthly values been changed after the month closed?',
     lead: 'Consistency of previously reported monthly values',
     groups: [{ checks: [
-      ['phys', 'Physical progress', 'Physical progress of an ongoing project updated for a past month'],
+      ['phys', 'Physical progress', 'Physical progress of an ongoing project not changed for a past month'],
       ['exp', 'Expenditure', 'Expenditure of an ongoing project updated for a past month']].map(([k, label, desc]) =>
         ({ id: k, label, desc, app: p => !p.newly, pass: (p, f) => !f.past[k], why: (p, f) => f.past[k] })) }] },
   { key: 'IV', title: 'Data inconsistency / sanctity issues', short: 'Data sanctity',
@@ -1289,11 +1341,28 @@ function tableInto(key, head, rows, rightCols = [], opt = {}) {
 }
 
 /* ---------- Analytics: metrics ---------- */
+// "How it is calculated" tooltip for the Insights tab cards: an info button plus a popover with the formula and a note
+const mtip = (id, name, formula, note) => `<span class="mtip"><button type="button" aria-label="How ${name.toLowerCase()} is calculated" aria-describedby="${id}" aria-expanded="false"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg></button>
+  <span class="mtip-pop" role="tooltip" id="${id}"><b class="t">How it is calculated</b><code>${formula}</code><span class="mn">${note}</span></span></span>`;
+// Data quality tooltips: one per category and one for the overall score (id must be unique on the page)
+const dqCatTip = (c, idp) => {
+  const checks = c.groups.flatMap(gr => gr.checks), multi = c.groups.length > 1;
+  const split = multi ? `split equally between groups ${c.groups.map(gr => gr.key).join(', ').replace(/, ([^,]*)$/, ' and $1')}, then between the checks in each group`
+    : `split equally between its ${checks.length} check${checks.length === 1 ? '' : 's'}: ${checks.map(ch => ch.label.toLowerCase()).join('; ')}`;
+  return mtip(idp + c.key, c.short + ' score', 'Score = Σ (Passed ÷ Applicable projects) × Check marks',
+    `${c.lead || c.desc}. The category carries 25 marks, ${split}. A project passes a check only when every condition in it is met.`); };
+const dqTotalTip = id => mtip(id, 'the overall data quality score', 'Overall score = I + II + III + IV  (25 marks each, out of 100)',
+  'Grade bands (proposed): <b>Excellent</b> 90 and above · <b>Good</b> 75–89.99 · <b>Needs improvement</b> 60–74.99 · <b>Poor</b> below 60.');
+// Formula and note for each analytical metric, shared by the metric cards and the Insights tab tooltips
+const METRIC_HOW = {
+  slippage: ['Slippage = (Revised + Need revision) ÷ Total active × 100', 'A non-revised project <b>needs revision</b> when time elapsed &gt; 80% and physical progress or expenditure &lt; 20% (80-20 rule). Quantum of increase = Σ(revised − original) ÷ Σ original, over revised projects only. Multiple revisions use total projects as the base.'],
+  lag: ['Lag = Need revision ÷ (Revised + Need revision) × 100', 'Measures the administrative delay in processing project revisions.'],
+  exec: ['Execution = Non-revised on track ÷ Non-revised past initiation × 100', 'On track: time elapsed − physical progress &lt; 30. Revised projects and projects with ≤25% time elapsed are excluded.'] };
 function renderMetrics() {
   const m = computeMetrics(CUR), pm = computeMetrics(PREV);
   const ex = CUR.filter(p => p.outlier).length;
   $('#exclNote div').innerHTML = `Metrics and charts use <b>${m.total}</b> projects. ${ex ? `<b>${ex}</b> project${ex > 1 ? 's are' : ' is'} under data scrutiny and excluded. <a class="linkbtn" href="#scrutiny">Review them</a>` : 'No projects are excluded.'}`;
-  const how = (f, note) => `<details class="how"><summary><svg class="i" style="width:15px;height:15px"><use href="#i-info"/></svg>How it is calculated</summary><code>${f}</code>${note}</details>`;
+  const how = (f, note) => `<details class="how"><summary><svg class="i" style="width:15px;height:15px"><use href="#i-info"/></svg>How it is calculated</summary><code>${f}</code><p style="margin:4px 0 0">${note}</p></details>`;
   $('#metrics').innerHTML = `
   <article class="card metric"><div class="eyebrow">Project planning</div><h3>Baseline slippage rate</h3>
     <div class="big"><b class="num">${fmt1(m.slippage)}%</b>${delta(m.slippage, pm.slippage, false, ' pts')}</div>
@@ -1306,21 +1375,21 @@ function renderMetrics() {
       <div><b class="num">${fmt1(m.multiCost)}%</b>Multiple cost revisions (${m.multiCostN} projects)</div>
       <div><b class="num">${fmt1(m.multiSched)}%</b>Multiple schedule revisions (${m.multiSchedN} projects)</div>
     </div>
-    ${how('Slippage = (Revised + Need revision) ÷ Total active × 100', '<p style="margin:4px 0 0">A non-revised project <b>needs revision</b> when time elapsed &gt; 80% and physical progress or expenditure &lt; 20% (80-20 rule). Quantum of increase = Σ(revised − original) ÷ Σ original, over revised projects only. Multiple revisions use total projects as the base.</p>')}
+    ${how(...METRIC_HOW.slippage)}
   </article>
   <article class="card metric"><div class="eyebrow">Monitoring &amp; administration</div><h3>Administrative lag rate</h3>
     <div class="big"><b class="num">${fmt1(m.lag)}%</b>${delta(m.lag, pm.lag, false, ' pts')}</div>
     <div class="frac num">${m.need} needing revision, of ${m.revised + m.need} revised or due</div>
     <div class="meter" aria-hidden="true"><i style="width:${m.lag || 0}%;background:var(--warn)"></i></div>
     <div class="dir">Revisions that are due but not yet processed. Lower is better.</div>
-    ${how('Lag = Need revision ÷ (Revised + Need revision) × 100', '<p style="margin:4px 0 0">Measures the administrative delay in processing project revisions.</p>')}
+    ${how(...METRIC_HOW.lag)}
   </article>
   <article class="card metric"><div class="eyebrow">Project execution</div><h3>Execution performance rate</h3>
     <div class="big"><b class="num">${fmt1(m.exec)}%</b>${delta(m.exec, pm.exec, true, ' pts')}</div>
     <div class="frac num">${m.onTrack} on track, of ${m.pastInit} non-revised projects past initiation</div>
     <div class="meter" aria-hidden="true"><i style="width:${m.exec || 0}%;background:var(--good)"></i></div>
     <div class="dir">Momentum of projects still on their original baseline. Higher is better.</div>
-    ${how('Execution = Non-revised on track ÷ Non-revised past initiation × 100', '<p style="margin:4px 0 0">On track: time elapsed − physical progress &lt; 30. Revised projects and projects with ≤25% time elapsed are excluded.</p>')}
+    ${how(...METRIC_HOW.exec)}
   </article>`;
 }
 
@@ -1444,6 +1513,12 @@ function renderScrutiny() {
 }
 
 /* ---------- Data Quality Assessment tab ---------- */
+// Category rows on the score card are buttons, so each info icon sits beside its row and is moved over a slot after the name
+function placeCatTips() {
+  $$('#dqScore .catli').forEach(li => { const slot = li.querySelector('.tipslot'), t = li.querySelector('.mtip'); if (!slot || !t) return;
+    const a = li.getBoundingClientRect(), b = slot.getBoundingClientRect();
+    t.style.left = (b.left - a.left) + 'px'; t.style.top = (b.top - a.top + b.height / 2 - 11) + 'px'; });
+}
 let DQR = null, DQP = null, DQ_BY_ID = {};
 const DQ_MONTHS = ['2026-06', '2026-07', '2026-08', '2026-09'];
 const dqScope = (month, keepAgency = true) => { const a = S.agency; if (!keepAgency) S.agency = ''; const L = applyFilters(month === S.month ? ALL : dataFor(month), true); S.agency = a; return L; };
@@ -1464,18 +1539,19 @@ function renderQuality() {
       <div class="dq-ring" role="img" aria-label="Overall data quality score ${fmt2(R.total)} out of 100, graded ${g.t}">
         <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" cx="60" cy="60" r="52" style="stroke:var(${g.col});stroke-dasharray:${C};stroke-dashoffset:${off}"/></svg>
         <div class="c"><b class="num">${fmt1(R.total)}</b><span>out of 100</span></div></div>
-      <span class="flag ${g.cls} grade">${g.cls === 'ok' || g.cls === 'info' ? '✓' : '!'} ${g.t}</span>
+      <span class="dq-gradeline"><span class="flag ${g.cls} grade">${g.cls === 'ok' || g.cls === 'info' ? '✓' : '!'} ${g.t}</span>${dqTotalTip('mtip-dqp-total')}</span>
     </div>
     <div class="dq-sum">
       <div><div class="eyebrow">Overall PAIMANA data quality score · ${monthName(S.month)}</div>
         <h2 style="margin-top:4px">${fmt2(R.total)} <span class="sub" style="font-size:14px;font-weight:600">/ 100</span> &nbsp;${pDelta}</h2>
         <p class="lede">${R.n} projects from ${ags} agenc${ags === 1 ? 'y' : 'ies'}${S.agency ? ` (${esc(S.agency)})` : ''}. Select a category to see how its marks were lost.</p></div>
       <ul class="catlist">${R.cats.map(c => { const lost = 25 - c.score, pn = new Set(c.checks.flatMap(ch => ch.fails.map(x => x.p.id))).size;
-        return `<li><button class="catrow" data-dqcat="${c.key}" aria-pressed="${S.dqCat === c.key}" aria-label="Category ${c.key}, ${c.title}: ${fmt2(c.score)} of 25 marks. Show checks">
-          <span class="rn">${c.key}</span><span class="nm">${c.short}</span><span class="sc num"><b>${fmt2(c.score)}</b> / 25</span>
+        return `<li class="catli"><button class="catrow" data-dqcat="${c.key}" aria-pressed="${S.dqCat === c.key}" aria-label="Category ${c.key}, ${c.title}: ${fmt2(c.score)} of 25 marks. Show checks">
+          <span class="rn">${c.key}</span><span class="nm">${c.short}<span class="tipslot" aria-hidden="true"></span></span><span class="sc num"><b>${fmt2(c.score)}</b> / 25</span>
           <span class="meter" aria-hidden="true"><i style="width:${c.score / 25 * 100}%;background:var(${dqGrade(c.score * 4).col})"></i></span>
-          <span class="lo">${lost < 0.005 ? 'Full marks' : `${fmt2(lost)} marks lost · ${pn} project${pn === 1 ? '' : 's'}`}</span></button></li>`; }).join('')}</ul>
+          <span class="lo">${lost < 0.005 ? 'Full marks' : `${fmt2(lost)} marks lost · ${pn} project${pn === 1 ? '' : 's'}`}</span></button>${dqCatTip(c, 'mtip-dqp')}</li>`; }).join('')}</ul>
     </div>`;
+  placeCatTips();
   // ---- trend
   const months = DQ_MONTHS.slice(0, pi + 1), T = months.map(m => m === S.month ? R : dqAssess(dqScope(m), m));
   const vals = T.map(t => t.empty ? null : t.total), lo = Math.max(0, Math.floor((Math.min(...vals.filter(v => v != null), 75) - 8) / 5) * 5);
@@ -1501,12 +1577,12 @@ function renderDqDetail() {
   const row = ch => {
     const na = !ch.applicable, pct = na ? 0 : ch.passed / ch.applicable * 100, moved = !na && Math.abs(ch.max - ch.base) > 1e-9;
     return `<tr><td style="white-space:normal;min-width:180px"><b>${ch.label}</b><div class="dsub">${ch.desc}</div></td><td class="desc">${ch.desc}</td>
-      <td class="r num">${na ? '—' : `${ch.passed} / ${ch.applicable}`}</td>
+      <td class="r num">${na ? '—' : `<span class="iss${ch.fails.length ? ' has' : ''}">${ch.fails.length}</span> / ${ch.applicable}`}</td>
       <td>${na ? '<span class="flag info">Not applicable</span>' : `<div class="cbar"><span class="meter" aria-hidden="true"><i style="width:${pct}%;background:var(${dqGrade(pct).col})"></i></span><span class="num">${fmt1(pct)}%</span></div>`}</td>
       <td class="r mk num">${na ? `<small>0 / ${fmt2(ch.base)}</small><span class="rd">Marks moved to the other checks</span>` : `<b>${fmt2(ch.marks)}</b> <small>/ ${fmt2(ch.max)}</small>${moved ? `<span class="rd">Includes ${fmt2(ch.max - ch.base)} moved from a check that doesn't apply</span>` : ''}`}</td>
       <td>${ch.fails.length ? `<button class="btn sm" data-dqcheck="${c.key}:${ch.id}" aria-label="View ${ch.fails.length} projects that failed ${ch.label}">View ${ch.fails.length} project${ch.fails.length === 1 ? '' : 's'}</button>` : na ? '' : '<span class="flag ok">✓ All passed</span>'}</td></tr>`; };
   const multi = c.groups.length > 1;
-  $('#dqTable').innerHTML = `<caption class="sr-only">Marks for each check in category ${c.key}</caption><thead><tr><th>Check</th><th class="desc">What is checked</th><th class="r">Passed / applicable</th><th>Compliance</th><th class="r">Marks</th><th><span class="sr-only">Projects</span></th></tr></thead><tbody>` +
+  $('#dqTable').innerHTML = `<caption class="sr-only">Marks for each check in category ${c.key}</caption><thead><tr><th>Check</th><th class="desc">What is checked</th><th class="r">Issues / applicable</th><th>Compliance</th><th class="r">Marks</th><th><span class="sr-only">Projects</span></th></tr></thead><tbody>` +
     c.groups.map(g => (multi ? `<tr class="grp"><td colspan="6">${g.key}. ${g.title}<span>${fmt2(g.max)} marks${Math.abs(g.max - g.base) > 1e-9 ? ' (incl. redistributed)' : ''}</span></td></tr>` : '') + g.checks.map(row).join('') +
       (multi ? `<tr class="sub"><td>Subtotal ${g.key}</td><td class="desc"></td><td colspan="2"></td><td class="r num">${fmt2(g.score)} <small style="color:var(--ink-3)">/ ${fmt2(g.max)}</small></td><td></td></tr>` : '')).join('') +
     `</tbody><tfoot><tr><td>Category ${c.key} score</td><td class="desc"></td><td colspan="2"></td><td class="r num">${fmt2(c.score)} <small style="color:var(--ink-3)">/ 25</small></td><td></td></tr></tfoot>`;
@@ -1536,7 +1612,7 @@ function renderDqAgency() {
   const { k, dir } = S.dqSort; rows.sort((x, y) => k === 'a' ? x.a.localeCompare(y.a) * dir : ((x[k] - y[k]) * dir || x.a.localeCompare(y.a)));
   const th = (key, l, r = true) => `<th class="${r ? 'r' : ''}" aria-sort="${S.dqSort.k === key ? (dir > 0 ? 'ascending' : 'descending') : 'none'}"><button class="linkbtn" data-dqsort="${key}" style="color:var(--ink-2)">${l}${S.dqSort.k === key ? (dir < 0 ? ' ↓' : ' ↑') : ''}</button></th>`;
   $('#dqAgSub').textContent = S.agency ? `Showing every agency for comparison; ${S.agency} is highlighted. Select another agency to switch, or select the highlighted one to show all.` : "Each implementing agency's score out of 100, lowest first so follow-up starts where it matters most. Select an agency to see its own assessment.";
-  $('#dqAgency').innerHTML = `<caption class="sr-only">Data quality score by implementing agency</caption><thead><tr><th>Sr.</th>${th('a', 'Agency', false)}${th('n', 'Projects')}${th('I', 'I. Reporting')}${th('II', 'II. Fixed fields')}${th('III', 'III. Past values')}${th('IV', 'IV. Sanctity')}${th('total', 'Overall / 100')}<th>Grade</th></tr></thead><tbody>` +
+  $('#dqAgency').innerHTML = `<caption class="sr-only">Data quality score by implementing agency</caption><thead><tr><th>Sr.</th>${th('a', 'Agency', false)}${th('n', 'Projects')}${th('I', 'I. Reporting')}${th('II', 'II. Project Profile')}${th('III', 'III. Past values')}${th('IV', 'IV. Sanctity')}${th('total', 'Overall / 100')}<th>Grade</th></tr></thead><tbody>` +
     rows.map((x, i) => { const g = dqGrade(x.total); return `<tr class="${x.a === S.agency ? 'sel' : ''}" data-dqag="${esc(x.a)}" tabindex="0" style="cursor:pointer" aria-label="${esc(x.a)}: ${fmt2(x.total)} out of 100, ${g.t}. Select to ${x.a === S.agency ? 'show all agencies' : 'see this agency'}">
       <td class="num">${i + 1}</td><td style="white-space:normal;min-width:170px"><b>${esc(x.a)}</b></td><td class="r num">${x.n}</td>
       ${['I', 'II', 'III', 'IV'].map(kk => `<td class="r num">${fmt2(x[kk])}</td>`).join('')}
@@ -1560,25 +1636,34 @@ function renderOvInsights() {
     ${[[70, 34], [290, 34], [180, 278]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="10" fill="${col[i]}"/><text class="nb" x="${x}" y="${y + .5}" text-anchor="middle" dominant-baseline="middle">${i + 1}</text>`).join('')}
   </svg>`;
   const only = ['100', '010', '001'];
-  $('#ovWarnBody').innerHTML = `<div class="venn-wrap"><div>${svg}<p class="venn-note">Circles show overlaps, not size</p></div><div style="display:flex;flex-direction:column;gap:20px">
+  // Analytical metrics, in the same order as on the Performance Analytics page
+  const m = computeMetrics(CUR), pm = computeMetrics(PREV);
+  const MET = [['Project planning', 'Baseline slippage rate', m.slippage, pm.slippage, false, 'slippage'],
+    ['Monitoring &amp; administration', 'Administrative lag rate', m.lag, pm.lag, false, 'lag'],
+    ['Project execution', 'Execution performance rate', m.exec, pm.exec, true, 'exec']];
+  const tip = (nm, k) => mtip('mtip-' + k, nm, ...METRIC_HOW[k]);
+  const metStrip = `<div class="ovm">${MET.map(([eb, nm, v, pv, upGood, k]) => `<div><span class="eyebrow">${eb}</span><h3>${nm}${tip(nm, k)}</h3>
+    <b class="val num">${v == null || !isFinite(v) ? '–' : fmt1(v) + '%'}</b><span class="chg">${delta(v, pv, upGood, ' pts')}</span></div>`).join('')}</div>`;
+  $('#ovWarnBody').innerHTML = metStrip + `<div class="venn-wrap"><div>${svg}<p class="venn-note">Circles show overlaps, not size</p></div><div style="display:flex;flex-direction:column;gap:20px">
     <ul class="vlist">${SC.map((c, i) => `<li><span class="nb" style="background:${col[i]}">${i + 1}</span><span class="nm">${c.title}</span><span class="n num">${sets[i].size}</span>
       <small>${c.id === 'sc3' ? 'Misaligned' : 'Lagging or lapsed'} · ${R(only[i])} only in this chart</small></li>`).join('')}</ul>
     <div class="vsum"><div><b class="num">${union}</b><span>flagged by at least one chart (of ${act.length})</span></div><div><b class="num">${all3}</b><span>flagged by all three</span></div></div>
   </div></div>
-  <p class="sr-only" id="ovWarnSum">${union} of ${act.length} active projects are flagged by at least one early-warning chart; ${all3} by all three. ${SC.map((c, i) => `${c.title}: ${sets[i].size}`).join('; ')}. Opens Performance Analytics.</p>`;
+  <p class="sr-only" id="ovWarnSum">${MET.map(([, nm, v]) => `${nm} ${v == null || !isFinite(v) ? 'not available' : fmt1(v) + '%'}`).join('; ')}. ${union} of ${act.length} active projects are flagged by at least one early-warning chart; ${all3} by all three. ${SC.map((c, i) => `${c.title}: ${sets[i].size}`).join('; ')}. Opens Performance Analytics.</p>`;
 
   // Data quality score
   const D = DQR, g = dqGrade(D.total), C = 2 * Math.PI * 52, off = C * (1 - (D.empty ? 0 : D.total) / 100);
   const issues = D.cats.reduce((a, c) => a + c.checks.reduce((b, ch) => b + ch.fails.length, 0), 0), pn = Object.keys(DQ_BY_ID).length;
   $('#ovDqSub').textContent = `PAIMANA data quality assessment · ${monthName(S.month)}`;
+  const catTip = c => dqCatTip(c, 'mtip-dq'), totalTip = dqTotalTip('mtip-dqtotal');
   // same structure as the overlap card: visual on top / left, numbered list, then two totals
   $('#ovDqBody').innerHTML = D.empty ? '<p class="sub">No projects in this selection.</p>' : `<div class="venn-wrap">
     <div class="dqvis"><div class="dq-ring" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" cx="60" cy="60" r="52" style="stroke:var(${g.col});stroke-dasharray:${C};stroke-dashoffset:${off}"/></svg>
       <div class="c"><b class="num">${fmt1(D.total)}</b><span>out of 100</span></div></div>
-      <p class="venn-note dqnote"><span class="flag ${g.cls}">${g.cls === 'ok' || g.cls === 'info' ? '✓' : '!'} ${g.t}</span>${DQP && !DQP.empty ? `<span>${delta(D.total, DQP.total, true, ' marks')}</span>` : ''}</p></div>
+      <p class="venn-note dqnote">${totalTip}<span class="flag ${g.cls}">${g.cls === 'ok' || g.cls === 'info' ? '✓' : '!'} ${g.t}</span>${DQP && !DQP.empty ? `<span>${delta(D.total, DQP.total, true, ' marks')}</span>` : ''}</p></div>
     <div style="display:flex;flex-direction:column;gap:20px">
       <ul class="vlist">${D.cats.map(c => { const lost = 25 - c.score, n = new Set(c.checks.flatMap(ch => ch.fails.map(x => x.p.id))).size;
-        return `<li><span class="nb rn">${c.key}</span><span class="nm">${c.short}</span><span class="n num">${fmt2(c.score)}<span class="of"> / 25</span></span>
+        return `<li><span class="nb rn">${c.key}</span><span class="nm">${c.short}${catTip(c)}</span><span class="n num">${fmt2(c.score)}<span class="of"> / 25</span></span>
           <span class="meter" aria-hidden="true"><i style="width:${c.score / 25 * 100}%;background:var(${dqGrade(c.score * 4).col})"></i></span>
           <small>${lost < 0.005 ? 'Full marks' : `${fmt2(lost)} marks lost · ${n} project${n === 1 ? '' : 's'}`}</small></li>`; }).join('')}</ul>
       <div class="vsum"><div><b class="num">${pn}</b><span>projects lost marks</span></div><div><b class="num">${issues}</b><span>issues to correct</span></div><div><b class="num">${CUR.filter(p => p.outlier).length}</b><span>under data scrutiny</span></div></div>
@@ -1749,7 +1834,9 @@ function setView(force) {
   if (S.view === 'overview') S.ovScroll = scrollY;
   S.view = proj ? 'project' : ['overview', 'analytics', 'quality'].includes(v) ? v : 'overview';
   const onProject = S.view === 'project';
-  ['dashHead', 'dashToolbar'].forEach(id => { $('#' + id).hidden = onProject; });
+  const insightsTab = S.view === 'overview' && S.ovTab !== 'pd';  // the Insights tab always shows the whole portfolio, so no filters or month
+  $('#dashHead').hidden = onProject; $('#dashToolbar').hidden = onProject || insightsTab; $('#dashHead .actions').hidden = insightsTab;
+  if (insightsTab && S.toWholePortfolio) S.toWholePortfolio();   // e.g. back from a filtered inner page
   $('#dashTabs').hidden = true;                              // one dashboard page; inner pages open from the Overview cards
   const PG = { analytics: ['Performance Analytics', 'Analytical metrics and early-warning charts for the projects in the current filters.'],
     quality: ['Data Quality Assessment', 'Assessment of the completeness, consistency and reliability of reported project data, scored out of 100. Projects under data scrutiny are listed at the end of this page.'] }[S.view];
@@ -1779,6 +1866,39 @@ function init() {
   const sts = [...new Set(RAW.map(p => p.state))].sort((a, b) => STATES[a].localeCompare(STATES[b]));
   $('#fState').insertAdjacentHTML('beforeend', sts.map(s => `<option value="${s}">${esc(STATES[s])}</option>`).join(''));
   try { const t = localStorage.getItem('pm-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+
+  // Dashboard section tabs: Performance & Data Insights (default) and Project Details Overview.
+  // The Insights tab has no filters or month picker, so it always shows the whole portfolio for the latest Flash Report;
+  // filters set on Project Details are put aside while Insights is open and restored on return.
+  const ovTabs = $$('#ovTabs [role="tab"]');
+  const SCOPE_KEYS = ['seg', 'agency', 'state', 'cost', 'group', 'month'];
+  const SCOPE_DEFAULT = { seg: 'all', agency: '', state: '', cost: '', group: '', month: $('#fMonth').options[0].value };
+  const setScope = v => {
+    if (SCOPE_KEYS.every(k => S[k] === v[k])) return;
+    SCOPE_KEYS.forEach(k => { S[k] = v[k]; });
+    $$('#seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.seg === S.seg));
+    [['#fAgency', 'agency'], ['#fState', 'state'], ['#fCost', 'cost'], ['#fGroup', 'group'], ['#fMonth', 'month']].forEach(([sel, k]) => { $(sel).value = S[k]; });
+    render();
+  };
+  S.toWholePortfolio = () => setScope(SCOPE_DEFAULT);
+  const selectOvTab = (t, focus) => {
+    const next = t.id === 'ovtab-pd' ? 'pd' : 'pa';
+    if (next !== (S.ovTab || 'pa')) {
+      if (next === 'pa') { S.pdScope = Object.fromEntries(SCOPE_KEYS.map(k => [k, S[k]])); setScope(SCOPE_DEFAULT); }
+      else if (S.pdScope) setScope(S.pdScope);
+    }
+    S.ovTab = next;
+    ovTabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $('#' + x.getAttribute('aria-controls')).hidden = !on; });
+    setView();
+    if (focus) t.focus();
+  };
+  $('#ovTabs').addEventListener('click', e => { const t = e.target.closest('[role="tab"]'); if (t) selectOvTab(t); });
+  $('#ovTabs').addEventListener('keydown', e => {
+    const i = ovTabs.indexOf(document.activeElement); if (i < 0) return;
+    const n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: ovTabs.length - 1 }[e.key];
+    if (n === undefined) return;
+    e.preventDefault(); selectOvTab(ovTabs[(n + ovTabs.length) % ovTabs.length], true);
+  });
 
   $('#seg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.seg = b.dataset.seg; $$('#seg button').forEach(x => x.setAttribute('aria-pressed', x === b)); render(); });
   [['#fAgency', 'agency'], ['#fState', 'state'], ['#fCost', 'cost'], ['#fGroup', 'group'], ['#fMonth', 'month']].forEach(([sel, k]) => $(sel).addEventListener('change', e => { S[k] = e.target.value; render(); }));
@@ -1845,11 +1965,28 @@ function init() {
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = `paimana-portfolio-${S.month}.csv`; a.click();
   });
   window.addEventListener('hashchange', () => setView());
+  if (window.ResizeObserver) new ResizeObserver(() => placeCatTips()).observe($('#dqScore'));
+  // Metric tooltips on the Insights tab: click pins one open; Esc or a click elsewhere closes it
+  const closeTips = except => $$('.mtip.open').forEach(t => { if (t !== except) { t.classList.toggle('open', false); t.querySelector('button').setAttribute('aria-expanded', 'false'); } });
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.mtip');
+    if (t) { if (e.target.closest('button')) { const on = !t.classList.contains('open'); closeTips(t); t.classList.toggle('open', on); t.classList.toggle('shut', false); t.querySelector('button').setAttribute('aria-expanded', on); } return; }
+    closeTips();
+    // the overlap card opens Performance Analytics from anywhere on it, like the other summary card
+    const card = e.target.closest('article.linkcard[data-href]');
+    if (card && !e.target.closest('a, button') && !getSelection().toString()) { S.lastCard = card.querySelector('a.go').id; goTo(card.dataset.href.slice(1)); }
+  });
+  document.addEventListener('keydown', e => {
+    const t = e.target.closest && e.target.closest('.mtip');
+    if (e.key === 'Escape' && t) { e.stopPropagation(); closeTips(); t.classList.add('shut'); }
+  }, true);
+  document.addEventListener('focusout', e => { const t = e.target.closest && e.target.closest('.mtip'); if (t) t.classList.toggle('shut', false); });
+  document.addEventListener('mouseout', e => { const t = e.target.closest && e.target.closest('.mtip'); if (t && !t.contains(e.relatedTarget)) t.classList.toggle('shut', false); });
   document.addEventListener('click', e => {
     if (e.target.closest('[data-back]')) { goTo('overview', { restore: true }); return; }
     const a = e.target.closest('a[href^="#"]'); if (!a) return; const v = a.getAttribute('href').slice(1);
     if (!['overview', 'analytics', 'scrutiny', 'quality'].includes(v)) return; e.preventDefault();
-    if (a.classList.contains('linkcard')) S.lastCard = a.id;
+    if (a.closest('.linkcard')) S.lastCard = a.id;
     goTo(v); $('#rail').classList.remove('open'); }, true);
   render(); setView();
 }
